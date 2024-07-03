@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.AdminDashboardFragment">
+
+    <!-- Main content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/white">
+
+            <!-- TextView in Toolbar -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dashboard"
+                android:textSize="20sp"
+                android:textColor="#1F2937"/>
+
+            <!-- ImageButton in Toolbar -->
+            <ImageButton
+                android:id="@+id/open_drawer_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/baseline_menu_24"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Open Drawer" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- Other content of your dashboard -->
+        <!-- Calendar and Other Elements -->
+        <!-- Other content of your dashboard -->
+        <!-- Calendar and Other Elements -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_corners"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="10dp"
+            android:padding="16dp">
+
+            <!-- Calendar Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/monthYearTextView"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Jul 2024"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#000" />
+
+                <ImageButton
+                    android:id="@+id/prev_month_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/baseline_arrow_back_ios_24"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Previous Month" />
+
+                <ImageButton
+                    android:id="@+id/next_month_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/baseline_arrow_forward_ios_24"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Next Month" />
+
+                <Button
+                    android:id="@+id/add_new_ptm_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:backgroundTint="#81E30E"
+                    android:text="Add New PTM"
+                    android:textColor="@android:color/white"
+                    app:cornerRadius="10dp" />
+            </LinearLayout>
+
+            <!-- Custom CalendarView -->
+            <GridLayout
+                android:id="@+id/calendar_grid"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:rowCount="7"
+                android:columnCount="7"
+                android:layout_marginTop="16dp">
+                <!-- Add TextViews for days of the week and dates dynamically in your code -->
+            </GridLayout>
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Navigation drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/nav_header"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
