@@ -23,7 +23,7 @@
             android:name=".ParentPage"
             android:exported="false" />
         <activity
-            android:name=".AdminPage"
+            android:name=".admin.AdminPage"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

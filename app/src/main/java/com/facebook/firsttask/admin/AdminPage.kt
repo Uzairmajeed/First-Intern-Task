@@ -1,8 +1,7 @@
-package com.facebook.firsttask
+package com.facebook.firsttask.admin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.facebook.firsttask.AdminDashboardFragment
 import com.facebook.firsttask.R
 
 class AdminPage : AppCompatActivity() {

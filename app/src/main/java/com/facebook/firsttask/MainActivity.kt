@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.firsttask.admin.AdminPage
 import com.facebook.firsttask.databinding.ActivityMainBinding
 import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
@@ -59,7 +60,16 @@ class MainActivity : AppCompatActivity() {
                     val jsonObject = JsonParser.parseString(response).asJsonObject
                     val dataObject = jsonObject.getAsJsonObject("data")
                     val roleName = dataObject.get("roleName").asString
+                    val token = dataObject.get("token").asString // Extract the token
+
                     withContext(Dispatchers.Main) {
+
+                        val sharedPreferences = getSharedPreferences("login_pref", Context.MODE_PRIVATE)
+                        with(sharedPreferences.edit()) {
+                            putString("auth_token", token) // Save the token in SharedPreferences
+                            apply()
+                        }
+
                         when (roleName) {
                             "Admin" -> {
                                 // Save login state
