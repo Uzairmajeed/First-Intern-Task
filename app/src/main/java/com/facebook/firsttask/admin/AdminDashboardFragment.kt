@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.facebook.firsttask.MainActivity
@@ -26,7 +24,6 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
     private var _binding: FragmentAdminDashboardBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var monthYearTextView: TextView
     private lateinit var customCalendarView: CustomCalendarView // Add this
 
@@ -50,10 +47,7 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        drawerLayout = binding.drawerLayout
-        val navigationView = binding.navView
         monthYearTextView = binding.monthYearTextView
-        val openDrawerButton: ImageButton = binding.openDrawerButton
         val prevMonthButton: ImageButton = binding.prevMonthButton
         val nextMonthButton: ImageButton = binding.nextMonthButton
         // Initialize CustomCalendarView
@@ -66,10 +60,6 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
         customCalendarView.setMonthChangeListener(this)
 
 
-        // Open the drawer when the button is clicked
-        openDrawerButton.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
 
         binding.addNewPtmButton.setOnClickListener {
 
@@ -86,45 +76,6 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
             customCalendarView.showNextMonth()
         }
 
-        // Handle navigation view item clicks
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_dashboard -> {
-                    // Handle Dashboard click
-                }
-                R.id.nav_ptm_management -> {
-                    // Handle Payment Management click
-                }
-                R.id.nav_appointments -> {
-                    // Handle Appointments click
-                }
-                R.id.nav_user_management -> {
-                    // Handle User Management click
-                }
-                R.id.nav_class_management -> {
-                    // Handle Class Management click
-                }
-                R.id.nav_subject_management -> {
-                    // Handle Subject Management click
-                }
-                R.id.nav_notifications -> {
-                    // Handle Notifications click
-                }
-                R.id.nav_settings -> {
-                    // Handle Settings click
-                }
-                R.id.nav_change_password -> {
-                    // Handle Change Password click
-                }
-                R.id.nav_logout -> {
-                    logoutUser()
-                }
-            }
-
-            // Close the drawer after handling the click
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
 
         val sharedPreferences = requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
         val authToken = sharedPreferences.getString("auth_token", null)

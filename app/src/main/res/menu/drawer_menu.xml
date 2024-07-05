@@ -4,59 +4,78 @@
     <item
         android:id="@+id/nav_dashboard"
         android:title="Dashboard"
-        android:icon="@drawable/baseline_dashboard_24" />
+        android:icon="@drawable/baseline_dashboard_24"
+        android:checkable="true"/>
 
-    <!-- Payment Management -->
+    <!-- PTM Management -->
     <item
         android:id="@+id/nav_ptm_management"
         android:title="PTM Management"
-        android:icon="@drawable/baseline_payment_24" />
+        android:icon="@drawable/baseline_payment_24"
+        android:checkable="true"/>
 
     <!-- Appointments -->
     <item
         android:id="@+id/nav_appointments"
         android:title="Appointments"
-        android:icon="@drawable/baseline_approval_24" />
+        android:icon="@drawable/baseline_approval_24"
+        android:checkable="true"/>
 
     <!-- User Management -->
     <item
         android:id="@+id/nav_user_management"
         android:title="User Management"
-        android:icon="@drawable/baseline_supervised_user_circle_24" />
+        android:icon="@drawable/baseline_supervised_user_circle_24"
+        android:checkable="true"/>
 
     <!-- Class Management -->
     <item
         android:id="@+id/nav_class_management"
         android:title="Class Management"
-        android:icon="@drawable/baseline_supervised_user_circle_24" />
+        android:icon="@drawable/baseline_supervised_user_circle_24"
+        android:checkable="true"/>
 
     <!-- Subject Management -->
     <item
         android:id="@+id/nav_subject_management"
         android:title="Subject Management"
-        android:icon="@drawable/baseline_supervised_user_circle_24" />
+        android:icon="@drawable/baseline_supervised_user_circle_24"
+        android:checkable="true"/>
 
     <!-- Notifications -->
     <item
         android:id="@+id/nav_notifications"
         android:title="Notifications"
-        android:icon="@drawable/baseline_notifications_none_24" />
+        android:icon="@drawable/baseline_notifications_none_24"
+        android:checkable="true"/>
 
     <!-- Settings -->
     <item
         android:id="@+id/nav_settings"
         android:title="Settings"
-        android:icon="@drawable/baseline_settings_24" />
+        android:icon="@drawable/baseline_settings_24"
+        android:checkable="true"/>
 
     <!-- Change Password -->
     <item
         android:id="@+id/nav_change_password"
         android:title="Change Password"
-        android:icon="@drawable/baseline_password_24" />
+        android:icon="@drawable/baseline_password_24"
+        android:checkable="true"/>
+
+    <!-- Divider -->
+    <item
+        android:id="@+id/nav_divider"
+        android:title=""
+        android:enabled="false"
+        android:checkable="false"/>
 
     <!-- Logout -->
-    <item
-        android:id="@+id/nav_logout"
-        android:title="Logout"
-        android:icon="@drawable/baseline_logout_24" />
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout"
+            android:icon="@drawable/baseline_logout_24"
+            android:checkable="true"/>
+    </group>
 </menu>
