@@ -44,7 +44,7 @@ class CustomCalendarView(context: Context, attrs: AttributeSet) : View(context, 
         for (i in dates.indices) {
             val date = dates[i]
             val (count, status) = countsAndStatuses[i]
-            val truncatedStatus = status.take(4) // Take first 3 letters of status
+            val truncatedStatus = status.take(4) // Take first 4 letters of status
             highlightedDates.add(HighlightedDateInfo(date, count, truncatedStatus))
         }
         invalidate() // Redraw the view
@@ -64,9 +64,11 @@ class CustomCalendarView(context: Context, attrs: AttributeSet) : View(context, 
         drawDayNames(canvas, cellWidth, cellHeight)
         drawDates(canvas, cellWidth, cellHeight)
 
-        // Highlight the specified dates
+        // Highlight the specified dates by filling the cell with pink color
         val highlightPaint = Paint().apply {
             color = Color.parseColor("#FFC0CB") // Pink color
+            alpha = 128 // Set alpha to 128 for 50% transparency
+
         }
         val textPaint = Paint().apply {
             color = Color.BLUE
@@ -76,17 +78,40 @@ class CustomCalendarView(context: Context, attrs: AttributeSet) : View(context, 
         for (info in highlightedDates) {
             val position = calculateDatePosition(info.date)
             if (position != null) {
-                // Draw circle
-                canvas.drawCircle(position.x.toFloat(), position.y.toFloat(), 20f, highlightPaint)
+                // Calculate the rectangle's boundaries
+                val left = (position.x - cellWidth / 2).toFloat()
+                val top = (position.y - cellHeight / 2).toFloat()
+                val right = (position.x + cellWidth / 2).toFloat()
+                val bottom = (position.y + cellHeight / 2).toFloat()
 
-                // Draw count
-                canvas.drawText(info.count.toString(), position.x.toFloat(), (position.y.toFloat() - 30), textPaint)
+                // Fill cell with pink color
+                canvas.drawRect(left, top, right, bottom, highlightPaint)
 
-                // Draw truncated status
-                canvas.drawText(info.status, position.x.toFloat(), (position.y.toFloat() + 30), textPaint)
+                // Adjust y positions for count and status
+                val countYPosition = (position.y - 40).toFloat() // Move count text up
+                val statusYPosition = (position.y + 60).toFloat() // Move status text down
+
+                // Adjust x position for status
+                val statusXPosition = (position.x - 40).toFloat() // Move status text to the left
+
+
+                // Draw count and truncated status within the cell
+                canvas.drawText(
+                    info.count.toString(),
+                    position.x.toFloat(),
+                    countYPosition,
+                    textPaint
+                )
+                canvas.drawText(
+                    info.status,
+                    statusXPosition,
+                    statusYPosition,
+                    textPaint
+                )
             }
         }
     }
+
 
     fun showPreviousMonth() {
         calendar.add(Calendar.MONTH, -1)
@@ -194,8 +219,9 @@ class CustomCalendarView(context: Context, attrs: AttributeSet) : View(context, 
 
         // Calculate the center position of the cell
         val x = (colIndex * cellWidth) + (cellWidth / 2)
-        val y = (rowIndex * cellHeight) + (cellHeight) + paint.textSize.toInt() // Adjusted y position
+        val y = (rowIndex * cellHeight) + (cellHeight * 1.5).toInt() // Adjusted y position
 
         return Point(x, y)
     }
+
 }
