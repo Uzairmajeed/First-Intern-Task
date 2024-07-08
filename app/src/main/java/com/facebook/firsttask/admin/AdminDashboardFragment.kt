@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.facebook.firsttask.MainActivity
 import com.facebook.firsttask.R
-import com.facebook.firsttask.admin.Ptmcreation.PtmCreationFragment
+import com.facebook.firsttask.admin.PTMCreation.PtmCreationFragment
 import com.facebook.firsttask.databinding.FragmentAdminDashboardBinding
 import kotlinx.coroutines.launch
 import org.json.JSONObject

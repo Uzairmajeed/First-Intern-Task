@@ -1,4 +1,4 @@
-package com.facebook.firsttask.admin.Ptmcreation
+package com.facebook.firsttask.admin.PTMCreation
 
 import android.view.LayoutInflater
 import android.view.View
