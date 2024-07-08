@@ -35,12 +35,13 @@ class AdminPage : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_dashboard -> {
                     // Handle Dashboard click
-                    binding.toolbartextview.setText("Dashboard")
+                    updateToolbarText("Dashboard")
+                    //binding.toolbartextview.setText()
                     replaceFragment(AdminDashboardFragment(),R.id.nav_dashboard)
                 }
                 R.id.nav_ptm_management -> {
                     // Handle Payment Management click
-                    binding.toolbartextview.setText("PTM Management")
+                    updateToolbarText("PTM Management")
                     replaceFragment(PTM_ManageFragment(),R.id.nav_dashboard)
                 }
                 R.id.nav_appointments -> {
@@ -87,6 +88,10 @@ class AdminPage : AppCompatActivity() {
 
         // Highlight the selected menu item
         binding.navView.setCheckedItem(menuItemId)
+    }
+
+    fun updateToolbarText(text: String) {
+        binding.toolbartextview.text = text
     }
 
 

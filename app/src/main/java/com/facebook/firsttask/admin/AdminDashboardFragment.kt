@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.facebook.firsttask.MainActivity
 import com.facebook.firsttask.R
+import com.facebook.firsttask.admin.Ptmcreation.PtmCreationFragment
 import com.facebook.firsttask.databinding.FragmentAdminDashboardBinding
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -62,7 +63,16 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
 
 
         binding.addNewPtmButton.setOnClickListener {
+            val ptmCreationFragment = PtmCreationFragment()
 
+            // Update the toolbar text in AdminPage
+            (requireActivity() as AdminPage).updateToolbarText("PTM Creation")
+
+            // Assuming you are calling this from within a Fragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ptmCreationFragment) // R.id.fragment_container is the ID of the container layout where fragments are placed
+                .addToBackStack(null) // This adds the transaction to the back stack, allowing users to navigate back
+                .commit()
         }
 
         // Handle previous month button click
