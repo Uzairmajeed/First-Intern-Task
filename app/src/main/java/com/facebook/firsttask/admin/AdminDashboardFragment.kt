@@ -65,14 +65,14 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
         binding.addNewPtmButton.setOnClickListener {
             val ptmCreationFragment = PtmCreationFragment()
 
-            // Update the toolbar text in AdminPage
-            (requireActivity() as AdminPage).updateToolbarText("PTM Creation")
-
             // Assuming you are calling this from within a Fragment
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ptmCreationFragment) // R.id.fragment_container is the ID of the container layout where fragments are placed
                 .addToBackStack(null) // This adds the transaction to the back stack, allowing users to navigate back
                 .commit()
+
+            // Update the toolbar text in AdminPage
+            (requireActivity() as AdminPage).updateToolbarText("PTM Creation")
         }
 
         // Handle previous month button click
@@ -154,6 +154,11 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
             }
         }
         return ptmDates
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as AdminPage).updateToolbarText("Dashboard")
     }
 
 

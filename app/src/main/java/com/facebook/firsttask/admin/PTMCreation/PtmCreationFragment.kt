@@ -1,15 +1,21 @@
 package com.facebook.firsttask.admin.PTMCreation
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.firsttask.R
 import com.facebook.firsttask.databinding.FragmentPtmCreationBinding
+import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.Calendar
 
 class PtmCreationFragment : Fragment() {
@@ -102,6 +108,53 @@ class PtmCreationFragment : Fragment() {
             datePickerDialog.show()
         }
 
+        getAllWings()
+    }
+
+    private  fun getAllWings(){
+
+        val sharedPreferences = requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
+        val authToken = sharedPreferences.getString("auth_token", null)
+        val schoolWings = authToken?.let { it1 -> GetAllSchoolWings(it1) }
+        lifecycleScope.launch {
+            val response = schoolWings?.getFromServer()
+            response?.let { parseAndDisplayWings(it) }
+        }
+    }
+
+    private fun parseAndDisplayWings(response: String) {
+        try {
+            val jsonObject = JSONObject(response)
+            val dataArray: JSONArray = jsonObject.getJSONArray("data")
+            val checkboxContainer = binding.checkboxContainer
+
+            // Clear any existing checkboxes
+            checkboxContainer.removeAllViews()
+
+            val checkBoxList = mutableListOf<CheckBox>()
+
+            for (i in 0 until dataArray.length()) {
+                val wingObject = dataArray.getJSONObject(i)
+                val wingName = wingObject.getString("wingName")
+
+                val checkBox = CheckBox(context).apply {
+                    text = wingName
+                    id = View.generateViewId()
+                }
+
+                checkboxContainer.addView(checkBox)
+                checkBoxList.add(checkBox)
+            }
+
+            // Set up the main checkbox to check/uncheck all other checkboxes
+            val checkBoxMain = binding.checkBoxMain
+            checkBoxMain.setOnCheckedChangeListener { _, isChecked ->
+                checkBoxList.forEach { it.isChecked = isChecked }
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun addTimeSelection() {
@@ -115,4 +168,5 @@ class PtmCreationFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

@@ -231,53 +231,21 @@
                         android:id="@+id/checkBoxMain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="30dp"
                         android:layout_gravity="center_horizontal"
                         android:text="Select All" />
 
-
                     <LinearLayout
+                        android:id="@+id/checkboxContainer"
                         android:layout_marginTop="30dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <!-- Replace with your desired number of checkboxes dynamically -->
-                        <CheckBox
-                            android:id="@+id/checkBox1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Option 1" />
-
-                        <CheckBox
-                            android:id="@+id/checkBox2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Option 2" />
-
-                        <CheckBox
-                            android:id="@+id/checkBox3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Option 3" />
-                        <CheckBox
-                            android:id="@+id/checkBox4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Option 3" />
-                        <CheckBox
-                            android:id="@+id/checkBox5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Option 3" />
-                        <CheckBox
-                            android:id="@+id/checkBox6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Option 3" />
-
-                        <!-- Add more checkboxes as needed -->
+                        <!-- Dynamic checkboxes will be added here -->
 
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
