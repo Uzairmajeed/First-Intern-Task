@@ -109,7 +109,14 @@ class PtmCreationFragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
+            val selectedWingNames = getSelectedWingNames()
             val onclickPtmCreation = OnclickPtmCreation()
+
+            // Create a bundle to pass the selected wing names
+            val bundle = Bundle()
+            bundle.putStringArrayList("selectedWingNames", ArrayList(selectedWingNames))
+            onclickPtmCreation.arguments = bundle
+
             // Assuming you are calling this from within a Fragment
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, onclickPtmCreation) // R.id.fragment_container is the ID of the container layout where fragments are placed
@@ -164,6 +171,17 @@ class PtmCreationFragment : Fragment() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun getSelectedWingNames(): List<String> {
+        val selectedWingNames = mutableListOf<String>()
+        for (i in 0 until binding.checkboxContainer.childCount) {
+            val checkBox = binding.checkboxContainer.getChildAt(i) as CheckBox
+            if (checkBox.isChecked) {
+                selectedWingNames.add(checkBox.text.toString())
+            }
+        }
+        return selectedWingNames
     }
 
     private fun addTimeSelection() {
