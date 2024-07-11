@@ -108,6 +108,15 @@ class PtmCreationFragment : Fragment() {
             datePickerDialog.show()
         }
 
+        binding.nextButton.setOnClickListener {
+            val onclickPtmCreation = OnclickPtmCreation()
+            // Assuming you are calling this from within a Fragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, onclickPtmCreation) // R.id.fragment_container is the ID of the container layout where fragments are placed
+                .addToBackStack(null) // This adds the transaction to the back stack, allowing users to navigate back
+                .commit()
+        }
+
         getAllWings()
     }
 

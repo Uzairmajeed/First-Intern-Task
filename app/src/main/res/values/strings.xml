@@ -5,10 +5,15 @@
 
     <string-array name="meeting_duration_array">
         <item>Select Duration</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
-        <item>3 hours</item>
-        <item>4 hours</item>
-        <item>5 hours</item>
+        <item>5 MIN</item>
+        <item>10 MIN</item>
+        <item>15 MIN</item>
+        <item>20 MIN</item>
+        <item>25 MIN</item>
+    </string-array>
+
+    <string-array name="location_options">
+        <item>School</item>
+        <!-- Add more locations as needed -->
     </string-array>
 </resources>
