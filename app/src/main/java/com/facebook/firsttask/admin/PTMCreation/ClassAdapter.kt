@@ -30,7 +30,8 @@ class ClassAdapter(private val classList: List<String>, private val teacherList:
 
 
     override fun getItemCount(): Int {
-        return classList.size + teacherList.size
+        // Return the minimum size of the two lists
+        return minOf(classList.size, teacherList.size)
     }
 
     class ClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
