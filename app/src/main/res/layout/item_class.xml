@@ -1,96 +1,92 @@
 <!-- res/layout/your_layout.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
-    <CheckBox
-        android:id="@+id/classNameCheckbox"
+    <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:text="Class Name"
-        android:gravity="center_vertical"
-        android:textAppearance="?android:textAppearanceMedium" />
+        android:background="@color/white"
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/linearlayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#DCCFCF"
-        android:orientation="horizontal">
+        <TableRow>
+            <CheckBox
+                android:id="@+id/classNameCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="Class Name"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/teacherNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:text="Teacher Name"
-            android:gravity="center_vertical"
-            android:layout_marginHorizontal="16dp"
-            android:textAppearance="?android:textAppearanceMedium" />
+        <TableRow
+            android:background="#DCCFCF">
+            <TextView
+                android:id="@+id/teacherNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="Teacher Name"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="16dp"
+                android:textAppearance="?android:textAppearanceMedium" />
+            <TextView
+                android:id="@+id/locationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="Location"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="16dp"
+                android:textAppearance="?android:textAppearanceMedium" />
+            <TextView
+                android:id="@+id/slotsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="Freeze Time Slots"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="16dp"
+                android:textAppearance="?android:textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/locationTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:text="Location"
-            android:gravity="center_vertical"
-            android:layout_marginHorizontal="16dp"
-            android:textAppearance="?android:textAppearanceMedium" />
+        <TableRow>
+            <CheckBox
+                android:id="@+id/teacherCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Teacher"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="16dp" />
+            <Spinner
+                android:id="@+id/locationSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="16dp"
+                android:entries="@array/location_options" />
+            <Spinner
+                android:id="@+id/timeSlotsSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="16dp" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/slotsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:text="Freeze Time Slots"
-            android:gravity="center_vertical"
-            android:layout_marginHorizontal="16dp"
-            android:textAppearance="?android:textAppearanceMedium" />
+        <TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_span="3"
+                android:background="@color/black"/>
+        </TableRow>
 
-    </LinearLayout>
+    </TableLayout>
 
-    <LinearLayout
-        android:id="@+id/linearlayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/teacherCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Teacher"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginEnd="8dp"/>
-
-        <Spinner
-            android:id="@+id/locationSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="16dp"
-            android:entries="@array/location_options" />
-
-        <Spinner
-            android:id="@+id/timeSlotsSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="16dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
-
-</LinearLayout>
+</HorizontalScrollView>
