@@ -1,4 +1,4 @@
-package com.facebook.firsttask.admin.PTMCreation
+package com.facebook.firsttask.admin.PTMCreation.nextpage
 
 import android.content.Context
 import android.os.Bundle
@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.firsttask.databinding.FragmentOnclickPtmCreationBinding
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class OnclickPtmCreation : Fragment() {
     private var _binding: FragmentOnclickPtmCreationBinding? = null
@@ -34,6 +38,24 @@ class OnclickPtmCreation : Fragment() {
 
         // Retrieve selected wing names from arguments
         val selectedWingNames = arguments?.getStringArrayList("selectedWingNames")
+        val selectedDuration = arguments?.getString("selectedDuration")
+        val selectedStartTime = arguments?.getString("selectedStartTime")
+        val selectedEndTime = arguments?.getString("selectedEndTime")
+        Log.d("DurationTimes",  "$selectedDuration\n" +
+                                          "$selectedStartTime" +
+                                          "\n$selectedEndTime")
+
+        // Convert selected start and end time to Date objects
+        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        val startDate = sdf.parse(selectedStartTime!!)
+        val endDate = sdf.parse(selectedEndTime!!)
+
+        // Calculate the list of times based on duration
+        val timeList = generateTimeSlots(startDate, endDate, selectedDuration!!)
+
+        // Log the generated time list
+        Log.d("GeneratedTimeList", timeList.toString())
+
 
         selectedWingNames?.let { wings ->
             authToken?.let { token ->
@@ -46,7 +68,7 @@ class OnclickPtmCreation : Fragment() {
                         val (classList, teacherList) = parseResponse(response)
 
                         if (classList.isNotEmpty() && teacherList.isNotEmpty()) {
-                            val adapter = ClassAdapter(classList, teacherList)
+                            val adapter = ClassAdapter(classList, teacherList,timeList)
                             binding.classRecyclerView.adapter = adapter
                             binding.classRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                         } else {
@@ -99,6 +121,36 @@ class OnclickPtmCreation : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+
+    private fun generateTimeSlots(startDate: Date, endDate: Date, durationString: String): List<String> {
+        // Parse duration string to get minutes
+        val duration = parseDuration(durationString)
+
+        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        val timeList = mutableListOf<String>()
+        val calendar = Calendar.getInstance()
+        calendar.time = startDate
+
+        // Add start time
+        timeList.add(sdf.format(startDate))
+
+        // Calculate time slots until end time
+        while (calendar.time.before(endDate)) {
+            calendar.add(Calendar.MINUTE, duration)
+            if (calendar.time.before(endDate) || calendar.time == endDate) {
+                timeList.add(sdf.format(calendar.time))
+            }
+        }
+
+        return timeList
+    }
+
+    private fun parseDuration(durationString: String): Int {
+        // Extract numeric part from the duration string and parse it
+        val durationInMinutes = durationString.split(" ")[0].toInt()
+        return durationInMinutes
     }
 
     override fun onDestroyView() {

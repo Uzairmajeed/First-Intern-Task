@@ -3,6 +3,7 @@ package com.facebook.firsttask.admin.PTMCreation
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.CheckBox
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.firsttask.R
+import com.facebook.firsttask.admin.PTMCreation.nextpage.OnclickPtmCreation
 import com.facebook.firsttask.databinding.FragmentPtmCreationBinding
 import kotlinx.coroutines.launch
 import org.json.JSONArray
@@ -109,20 +111,40 @@ class PtmCreationFragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
+            // Get selected wing names
             val selectedWingNames = getSelectedWingNames()
-            val onclickPtmCreation = OnclickPtmCreation()
 
-            // Create a bundle to pass the selected wing names
-            val bundle = Bundle()
-            bundle.putStringArrayList("selectedWingNames", ArrayList(selectedWingNames))
+            // Get selected spinner values
+            val selectedDuration = binding.durationSpinner.selectedItem.toString()
+            val selectedStartTime = binding.starttimeSpinner.selectedItem.toString()
+            val selectedEndTime = binding.endtimespinnerSpinner.selectedItem.toString()
+
+            // Log the selected spinner values
+            val logMessage = "Selected Wing Names: $selectedWingNames\n" +
+                    "Selected Duration: $selectedDuration\n" +
+                    "Selected Start Time: $selectedStartTime\n" +
+                    "Selected End Time: $selectedEndTime"
+            Log.d("PtmCreationFragment", logMessage)
+
+            // Create a bundle to pass the selected data
+            val bundle = Bundle().apply {
+                putStringArrayList("selectedWingNames", ArrayList(selectedWingNames))
+                putString("selectedDuration", selectedDuration)
+                putString("selectedStartTime", selectedStartTime)
+                putString("selectedEndTime", selectedEndTime)
+            }
+
+            // Create an instance of the next fragment
+            val onclickPtmCreation = OnclickPtmCreation()
             onclickPtmCreation.arguments = bundle
 
-            // Assuming you are calling this from within a Fragment
+            // Replace the current fragment with the next fragment
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, onclickPtmCreation) // R.id.fragment_container is the ID of the container layout where fragments are placed
-                .addToBackStack(null) // This adds the transaction to the back stack, allowing users to navigate back
+                .replace(R.id.fragment_container, onclickPtmCreation)
+                .addToBackStack(null)
                 .commit()
         }
+
 
         getAllWings()
     }
