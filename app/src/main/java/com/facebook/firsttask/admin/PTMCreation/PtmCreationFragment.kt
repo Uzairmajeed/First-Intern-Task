@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.firsttask.R
@@ -115,35 +116,55 @@ class PtmCreationFragment : Fragment() {
             val selectedWingNames = getSelectedWingNames()
 
             // Get selected spinner values
-            val selectedDuration = binding.durationSpinner.selectedItem.toString()
-            val selectedStartTime = binding.starttimeSpinner.selectedItem.toString()
-            val selectedEndTime = binding.endtimespinnerSpinner.selectedItem.toString()
+            val selectedDuration = binding.durationSpinner.selectedItem?.toString()
+            val selectedStartTime = binding.starttimeSpinner.selectedItem?.toString()
+            val selectedEndTime = binding.endtimespinnerSpinner.selectedItem?.toString()
 
-            // Log the selected spinner values
-            val logMessage = "Selected Wing Names: $selectedWingNames\n" +
-                    "Selected Duration: $selectedDuration\n" +
-                    "Selected Start Time: $selectedStartTime\n" +
-                    "Selected End Time: $selectedEndTime"
-            Log.d("PtmCreationFragment", logMessage)
+            // Check if all required fields are filled
+            when {
+                selectedDuration.isNullOrEmpty() || selectedDuration == "Select Duration" -> {
+                    Toast.makeText(requireContext(), "Please select a duration.", Toast.LENGTH_SHORT).show()
+                }
+                selectedStartTime.isNullOrEmpty() || selectedStartTime == "Select Start Time" -> {
+                    Toast.makeText(requireContext(), "Please select a start time.", Toast.LENGTH_SHORT).show()
+                }
+                selectedEndTime.isNullOrEmpty() || selectedEndTime == "Select End Time" -> {
+                    Toast.makeText(requireContext(), "Please select an end time.", Toast.LENGTH_SHORT).show()
+                }
+                selectedWingNames.isEmpty() -> {
+                    Toast.makeText(requireContext(), "Please select at least one wing.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    // Log the selected spinner values
+                    val logMessage = "Selected Wing Names: $selectedWingNames\n" +
+                            "Selected Duration: $selectedDuration\n" +
+                            "Selected Start Time: $selectedStartTime\n" +
+                            "Selected End Time: $selectedEndTime"
+                    Log.d("PtmCreationFragment", logMessage)
 
-            // Create a bundle to pass the selected data
-            val bundle = Bundle().apply {
-                putStringArrayList("selectedWingNames", ArrayList(selectedWingNames))
-                putString("selectedDuration", selectedDuration)
-                putString("selectedStartTime", selectedStartTime)
-                putString("selectedEndTime", selectedEndTime)
+                    // Create a bundle to pass the selected data
+                    val bundle = Bundle().apply {
+                        putStringArrayList("selectedWingNames", ArrayList(selectedWingNames))
+                        putString("selectedDuration", selectedDuration)
+                        putString("selectedStartTime", selectedStartTime)
+                        putString("selectedEndTime", selectedEndTime)
+                    }
+
+                    // Create an instance of the next fragment
+                    val onclickPtmCreation = OnclickPtmCreation()
+                    onclickPtmCreation.arguments = bundle
+
+                    // Replace the current fragment with the next fragment
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, onclickPtmCreation)
+                        .addToBackStack(null)
+                        .commit()
+                }
             }
-
-            // Create an instance of the next fragment
-            val onclickPtmCreation = OnclickPtmCreation()
-            onclickPtmCreation.arguments = bundle
-
-            // Replace the current fragment with the next fragment
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, onclickPtmCreation)
-                .addToBackStack(null)
-                .commit()
         }
+
+
+
 
 
         getAllWings()
