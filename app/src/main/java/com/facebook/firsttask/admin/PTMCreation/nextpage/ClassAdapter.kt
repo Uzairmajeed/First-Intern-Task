@@ -22,9 +22,6 @@ class ClassAdapter(
 ) : RecyclerView.Adapter<ClassAdapter.ClassViewHolder>() {
 
     private val selectedTimesList = mutableListOf<String>()
-    private var spinnerAdapter: CustomArrayAdapter? = null
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClassViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_class, parent, false)
@@ -32,6 +29,8 @@ class ClassAdapter(
     }
 
     override fun onBindViewHolder(holder: ClassViewHolder, position: Int) {
+        Log.d("AdapterDebug", "Position: $position, classList size: ${classList.size}, teacherList size: ${teacherList.size}")
+
         if (position < classList.size && position < teacherList.size) {
             val className = classList[position]
             val teacherName = teacherList[position]
@@ -41,38 +40,30 @@ class ClassAdapter(
             // Format time list
             val formattedTimeList = formatTimeList(timeList)
 
-            // Initialize or update the adapter if already initialized
-            if (spinnerAdapter == null) {
-                spinnerAdapter = CustomArrayAdapter(
-                    holder.itemView.context,
-                    android.R.layout.simple_spinner_item,
-                    formattedTimeList
-                )
-                spinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                holder.timeSlotsSpinner.adapter = spinnerAdapter
-            } else {
-                spinnerAdapter?.clear()
-                spinnerAdapter?.addAll(formattedTimeList)
-                spinnerAdapter?.notifyDataSetChanged()
-            }
+            // Create a new ArrayAdapter for each spinner
+            val timeAdapter = CustomArrayAdapter(
+                holder.itemView.context,
+                android.R.layout.simple_spinner_item,
+                formattedTimeList
+            )
+            timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            holder.timeSlotsSpinner.adapter = timeAdapter
 
             // Set up ListPopupWindow
             val popup = ListPopupWindow(holder.itemView.context)
-            popup.setAdapter(spinnerAdapter)
+            popup.setAdapter(timeAdapter)
             popup.anchorView = holder.timeSlotsSpinner
             popup.height = calculatePopupHeight(holder.timeSlotsSpinner, 5) // Set height for 5 items
             popup.setOnItemClickListener { parent, view, position, id ->
                 // Add selected time to list
                 val selectedTime = formattedTimeList[position]
-                // Update spinner adapter with selected items
-                holder.timeSlotsSpinner.setSelection(position)
                 selectedTimesList.add(selectedTime)
 
                 // Log selectedTimesList
                 Log.d("AdapterDebug", "Selected Times List: $selectedTimesList")
 
-                // Notify adapter of data change
-                spinnerAdapter?.notifyDataSetChanged()
+                // Update spinner adapter with selected items
+                holder.timeSlotsSpinner.setSelection(position) // Set selection to the clicked item
 
                 popup.dismiss()
             }
@@ -121,7 +112,6 @@ class ClassAdapter(
         val timeSlotsSpinner: Spinner = itemView.findViewById(R.id.timeSlotsSpinner)
         val locationSlotsSpinner: Spinner = itemView.findViewById(R.id.locationSpinner)
     }
-
 
     // Custom ArrayAdapter to handle dropdown view customization
     inner class CustomArrayAdapter(
