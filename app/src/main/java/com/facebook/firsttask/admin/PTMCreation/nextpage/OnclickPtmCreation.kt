@@ -64,11 +64,14 @@ class OnclickPtmCreation : Fragment() {
                     val response = getAllTeacherNames.getFromServer(wings)
                     Log.d("Teacher&ClassNamesResponse", response ?: "No response")
 
+                    // Fetch locations
+                    val locationList = getAllTeacherNames.getAllLocations()
+
                     if (response != null) {
                         val (classList, teacherList) = parseResponse(response)
 
-                        if (classList.isNotEmpty() && teacherList.isNotEmpty()) {
-                            val adapter = ClassAdapter(classList, teacherList,timeList)
+                        if (locationList != null && classList.isNotEmpty() && teacherList.isNotEmpty()) {
+                            val adapter = ClassAdapter(classList, teacherList, timeList, locationList)
                             binding.classRecyclerView.adapter = adapter
                             binding.classRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                         } else {

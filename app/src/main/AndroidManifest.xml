@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ParentPage"
+            android:name=".parent.ParentPage"
             android:exported="false" />
         <activity
             android:name=".admin.AdminPage"

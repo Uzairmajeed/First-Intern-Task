@@ -14,7 +14,8 @@ import com.facebook.firsttask.R
 class ClassAdapter(
     private val classList: List<String>,
     private val teacherList: List<String>,
-    private val timeList: List<String>
+    private val timeList: List<String>,
+    private val locationList: List<String>
 ) : RecyclerView.Adapter<ClassAdapter.ClassViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClassViewHolder {
@@ -56,6 +57,11 @@ class ClassAdapter(
                 true
             }
 
+            // Set up location spinner
+            val locationAdapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_item, locationList)
+            locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            holder.locationSlotsSpinner.adapter = locationAdapter
+
         } else {
             Log.e("AdapterDebug", "Invalid position: $position")
         }
@@ -87,5 +93,6 @@ class ClassAdapter(
         val classNameTextView: TextView = itemView.findViewById(R.id.classNameCheckbox)
         val teacherNameTextView: TextView = itemView.findViewById(R.id.teacherCheckBox)
         val timeSlotsSpinner: Spinner = itemView.findViewById(R.id.timeSlotsSpinner)
+        val locationSlotsSpinner: Spinner = itemView.findViewById(R.id.locationSpinner)
     }
 }
