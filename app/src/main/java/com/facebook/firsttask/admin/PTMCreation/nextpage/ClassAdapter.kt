@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.R
 
 class ClassAdapter(
-    private val classList: List<String>,
-    private val teacherList: List<String>,
+    private val classList: List<ClassData>,
+    private val teacherList: List<TeacherData>,
     private val timeList: List<String>,
     private val locationList: List<String>
 ) : RecyclerView.Adapter<ClassAdapter.ClassViewHolder>() {
@@ -34,8 +34,8 @@ class ClassAdapter(
         if (position < classList.size && position < teacherList.size) {
             val className = classList[position]
             val teacherName = teacherList[position]
-            holder.classNameTextView.text = className
-            holder.teacherNameTextView.text = teacherName
+            holder.classNameTextView.text = className.className
+            holder.teacherNameTextView.text = teacherName.teacherName
 
             // Initialize selected times list for this position if not already present
             val selectedTimesList = selectedTimesMap.getOrPut(position) { mutableListOf() }

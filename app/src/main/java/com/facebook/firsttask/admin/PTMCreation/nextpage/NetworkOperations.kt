@@ -14,7 +14,7 @@ import io.ktor.http.HttpStatusCode
 import org.json.JSONException
 import org.json.JSONObject
 
-class GetAllTeacherNames(private val authToken: String,private val context: Context) {
+class NetworkOperations(private val authToken: String, private val context: Context) {
     private val client = HttpClient(Android) {
         followRedirects = false
         expectSuccess = false
@@ -82,6 +82,11 @@ class GetAllTeacherNames(private val authToken: String,private val context: Cont
             Log.e("ParseLocationsError", "Error parsing locations", e)
         }
         return locationList
+    }
+
+
+    suspend fun createPTM(){
+
     }
 
 

@@ -78,7 +78,7 @@ class OnclickPtmCreation : Fragment() {
         selectedWingNames?.let { wings ->
             authToken?.let { token ->
                 lifecycleScope.launch {
-                    val getAllTeacherNames = GetAllTeacherNames(token, requireContext())
+                    val getAllTeacherNames = NetworkOperations(token, requireContext())
                     val response = getAllTeacherNames.getFromServer(wings)
                     Log.d("Teacher&ClassNamesResponse", response ?: "No response")
 
@@ -115,9 +115,9 @@ class OnclickPtmCreation : Fragment() {
 
     }
 
-    private fun parseResponse(response: String): Pair<List<String>, List<String>> {
-        val classList = mutableListOf<String>()
-        val teacherList = mutableListOf<String>()
+    private fun parseResponse(response: String): Pair<List<ClassData>, List<TeacherData>> {
+        val classList = mutableListOf<ClassData>()
+        val teacherList = mutableListOf<TeacherData>()
 
         val jsonObject = JSONObject(response)
         val dataArray = if (jsonObject.has("data")) jsonObject.getJSONArray("data") else null
@@ -125,20 +125,28 @@ class OnclickPtmCreation : Fragment() {
         if (dataArray != null) {
             for (i in 0 until dataArray.length()) {
                 val classObject = dataArray.getJSONObject(i)
+                val classId = classObject.getInt("classId")
                 val className = classObject.getString("className")
-                classList.add(className)
+                classList.add(ClassData(classId, className))
 
                 val teacherArray = classObject.getJSONArray("teacherVm")
                 for (j in 0 until teacherArray.length()) {
                     val teacherObject = teacherArray.getJSONObject(j)
+                    val teacherId = teacherObject.getInt("teacherId")
                     val teacherName = teacherObject.getString("teacherName")
-                    teacherList.add(teacherName)
+                    val locationId = teacherObject.getInt("locationId")
+                    val teacherLocation = teacherObject.optString("teacherLocation", "")
+                    teacherList.add(TeacherData(teacherId, teacherName, locationId, teacherLocation))
                 }
             }
         }
+        // Log classList and teacherList
+        Log.d("ParsedResponse", "Class List: $classList")
+        Log.d("ParsedResponse", "Teacher List: $teacherList")
 
         return Pair(classList, teacherList)
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -179,3 +187,4 @@ class OnclickPtmCreation : Fragment() {
         _binding = null
     }
 }
+
