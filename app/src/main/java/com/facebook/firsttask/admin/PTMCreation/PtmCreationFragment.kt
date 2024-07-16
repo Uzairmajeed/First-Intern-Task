@@ -3,6 +3,7 @@ package com.facebook.firsttask.admin.PTMCreation
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,14 +20,19 @@ import com.facebook.firsttask.databinding.FragmentPtmCreationBinding
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class PtmCreationFragment : Fragment() {
 
     private var _binding: FragmentPtmCreationBinding? = null
     private val binding get() = _binding!!
+    // Define a list to hold time selections
+    private val timeSelections = mutableListOf<TimeSelection>()
     private lateinit var timeSelectionAdapter: TimeSelectionAdapter
-    private val timeSelections = mutableListOf(TimeSelection("", "")) // Initialize with one item
+    //private val timeSelections = mutableListOf(TimeSelection("", "")) // Initialize with one item
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -174,6 +180,10 @@ class PtmCreationFragment : Fragment() {
                             "Offline Checked: $isOfflineChecked"
                     Log.d("PtmCreationFragment", logMessage)
 
+                    // Collect data from TimeSelectionAdapter
+                    val timeSelectionData = timeSelectionAdapter.getTimeSelectionData()
+
+
                     // Create a bundle to pass the selected data
                     val bundle = Bundle().apply {
                         putStringArrayList("selectedWingNames", ArrayList(selectedWingNames))
@@ -183,6 +193,7 @@ class PtmCreationFragment : Fragment() {
                         putString("ptmDate", ptmDate)
                         putBoolean("isOnlineChecked", isOnlineChecked)
                         putBoolean("isOfflineChecked", isOfflineChecked)
+                        putParcelableArrayList("timeSelections", ArrayList<Parcelable>(timeSelectionData))
                     }
 
                     // Create an instance of the next fragment
@@ -263,9 +274,10 @@ class PtmCreationFragment : Fragment() {
     }
 
     private fun addTimeSelection() {
-        timeSelections.add(TimeSelection("", ""))
+        timeSelections.add(TimeSelection("null", "null"))
         timeSelectionAdapter.notifyDataSetChanged()
     }
+
 
 
 

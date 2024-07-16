@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.firsttask.admin.PTMCreation.TimeSelection
 import com.facebook.firsttask.databinding.FragmentOnclickPtmCreationBinding
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -44,6 +45,16 @@ class OnclickPtmCreation : Fragment() {
         val ptmDate = arguments?.getString("ptmDate")
         val isOnlineChecked = arguments?.getBoolean("isOnlineChecked", false)
         val isOfflineChecked = arguments?.getBoolean("isOfflineChecked", false)
+        // Retrieve time selections from arguments
+        val timeSelections = arguments?.getParcelableArrayList<TimeSelection>("timeSelections")
+
+        // Log the retrieved time selections
+        timeSelections?.forEachIndexed { index, timeSelection ->
+            Log.d("OnclickPtmCreation", "Time Selection $index:")
+            Log.d("OnclickPtmCreation", "  Start Time: ${timeSelection.startTime}")
+            Log.d("OnclickPtmCreation", "  End Time: ${timeSelection.endTime}")
+        }
+
         Log.d("OnclickPtmCreation", "Selected Wing Names: $selectedWingNames")
         Log.d("OnclickPtmCreation", "Selected Duration: $selectedDuration")
         Log.d("OnclickPtmCreation", "Selected Start Time: $selectedStartTime")
