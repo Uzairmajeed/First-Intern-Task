@@ -95,21 +95,34 @@ class PtmCreationFragment : Fragment() {
 
         binding.btnCalendar.setOnClickListener {
             val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val todayYear = calendar.get(Calendar.YEAR)
+            val todayMonth = calendar.get(Calendar.MONTH)
+            val todayDay = calendar.get(Calendar.DAY_OF_MONTH)
 
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
                 { _, selectedYear, selectedMonth, selectedDay ->
-                    val selectedDate = "${selectedDay}/${selectedMonth + 1}/${selectedYear}"
-                    binding.etPtmDate.setText(selectedDate)
+                    // Convert selected date to Calendar instance
+                    val selectedCalendar = Calendar.getInstance()
+                    selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
+
+                    // Compare selected date with today's date
+                    if (selectedCalendar.before(calendar)) {
+                        Toast.makeText(requireContext(), "Please select a future date.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val selectedDate = "${selectedDay}/${selectedMonth + 1}/${selectedYear}"
+                        binding.etPtmDate.setText(selectedDate)
+                    }
                 },
-                year, month, day
+                todayYear, todayMonth, todayDay
             )
+
+            // Set minimum date in DatePickerDialog to today's date
+            datePickerDialog.datePicker.minDate = calendar.timeInMillis
 
             datePickerDialog.show()
         }
+
 
         binding.nextButton.setOnClickListener {
             // Get selected wing names
@@ -120,8 +133,24 @@ class PtmCreationFragment : Fragment() {
             val selectedStartTime = binding.starttimeSpinner.selectedItem?.toString()
             val selectedEndTime = binding.endtimespinnerSpinner.selectedItem?.toString()
 
+            // Get the text from the EditText
+            val ptmDate = binding.etPtmDate.text.toString()
+
+            // Get the states of the CheckBoxes
+            val isOnlineChecked = binding.onlineCheckBox.isChecked
+            val isOfflineChecked = binding.offlineCheckBox.isChecked
+
+            // Check if at least one checkbox is checked
+            if (!isOnlineChecked && !isOfflineChecked) {
+                Toast.makeText(requireContext(), "Please select at least one checkbox.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener  // Exit early if no checkbox is selected
+            }
+
             // Check if all required fields are filled
             when {
+                ptmDate.isEmpty() -> {
+                    Toast.makeText(requireContext(), "Please select a PTM date.", Toast.LENGTH_SHORT).show()
+                }
                 selectedDuration.isNullOrEmpty() || selectedDuration == "Select Duration" -> {
                     Toast.makeText(requireContext(), "Please select a duration.", Toast.LENGTH_SHORT).show()
                 }
@@ -135,11 +164,14 @@ class PtmCreationFragment : Fragment() {
                     Toast.makeText(requireContext(), "Please select at least one wing.", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    // Log the selected spinner values
+                    // Log the selected spinner values and additional data
                     val logMessage = "Selected Wing Names: $selectedWingNames\n" +
                             "Selected Duration: $selectedDuration\n" +
                             "Selected Start Time: $selectedStartTime\n" +
-                            "Selected End Time: $selectedEndTime"
+                            "Selected End Time: $selectedEndTime\n" +
+                            "PTM Date: $ptmDate\n" +
+                            "Online Checked: $isOnlineChecked\n" +
+                            "Offline Checked: $isOfflineChecked"
                     Log.d("PtmCreationFragment", logMessage)
 
                     // Create a bundle to pass the selected data
@@ -148,6 +180,9 @@ class PtmCreationFragment : Fragment() {
                         putString("selectedDuration", selectedDuration)
                         putString("selectedStartTime", selectedStartTime)
                         putString("selectedEndTime", selectedEndTime)
+                        putString("ptmDate", ptmDate)
+                        putBoolean("isOnlineChecked", isOnlineChecked)
+                        putBoolean("isOfflineChecked", isOfflineChecked)
                     }
 
                     // Create an instance of the next fragment

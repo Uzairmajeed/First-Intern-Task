@@ -41,9 +41,16 @@ class OnclickPtmCreation : Fragment() {
         val selectedDuration = arguments?.getString("selectedDuration")
         val selectedStartTime = arguments?.getString("selectedStartTime")
         val selectedEndTime = arguments?.getString("selectedEndTime")
-        Log.d("DurationTimes",  "$selectedDuration\n" +
-                                          "$selectedStartTime" +
-                                          "\n$selectedEndTime")
+        val ptmDate = arguments?.getString("ptmDate")
+        val isOnlineChecked = arguments?.getBoolean("isOnlineChecked", false)
+        val isOfflineChecked = arguments?.getBoolean("isOfflineChecked", false)
+        Log.d("OnclickPtmCreation", "Selected Wing Names: $selectedWingNames")
+        Log.d("OnclickPtmCreation", "Selected Duration: $selectedDuration")
+        Log.d("OnclickPtmCreation", "Selected Start Time: $selectedStartTime")
+        Log.d("OnclickPtmCreation", "Selected End Time: $selectedEndTime")
+        Log.d("OnclickPtmCreation", "PTM Date: $ptmDate")
+        Log.d("OnclickPtmCreation", "Online Checked: $isOnlineChecked")
+        Log.d("OnclickPtmCreation", "Offline Checked: $isOfflineChecked")
 
         // Convert selected start and end time to Date objects
         val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
