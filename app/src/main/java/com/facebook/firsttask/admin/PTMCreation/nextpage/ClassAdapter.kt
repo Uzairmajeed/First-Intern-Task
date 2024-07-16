@@ -21,7 +21,7 @@ class ClassAdapter(
     private val locationList: List<String>
 ) : RecyclerView.Adapter<ClassAdapter.ClassViewHolder>() {
 
-    private val selectedTimesList = mutableListOf<String>()
+    private val selectedTimesMap = mutableMapOf<Int, MutableList<String>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClassViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_class, parent, false)
@@ -37,6 +37,9 @@ class ClassAdapter(
             holder.classNameTextView.text = className
             holder.teacherNameTextView.text = teacherName
 
+            // Initialize selected times list for this position if not already present
+            val selectedTimesList = selectedTimesMap.getOrPut(position) { mutableListOf() }
+
             // Format time list
             val formattedTimeList = formatTimeList(timeList)
 
@@ -44,7 +47,8 @@ class ClassAdapter(
             val timeAdapter = CustomArrayAdapter(
                 holder.itemView.context,
                 android.R.layout.simple_spinner_item,
-                formattedTimeList
+                formattedTimeList,
+                selectedTimesList
             )
             timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             holder.timeSlotsSpinner.adapter = timeAdapter
@@ -60,7 +64,7 @@ class ClassAdapter(
                 selectedTimesList.add(selectedTime)
 
                 // Log selectedTimesList
-                Log.d("AdapterDebug", "Selected Times List: $selectedTimesList")
+                Log.d("AdapterDebug", "Selected Times List for position $position: $selectedTimesList")
 
                 // Update spinner adapter with selected items
                 holder.timeSlotsSpinner.setSelection(position) // Set selection to the clicked item
@@ -117,7 +121,8 @@ class ClassAdapter(
     inner class CustomArrayAdapter(
         context: Context,
         resource: Int,
-        objects: List<String>
+        objects: List<String>,
+        private val selectedTimesList: MutableList<String>
     ) : ArrayAdapter<String>(context, resource, objects) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
