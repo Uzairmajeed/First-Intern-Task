@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.ListPopupWindow
 import android.widget.Spinner
 import android.widget.TextView
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.R
 
 class ClassAdapter(
+    private val recyclerView: RecyclerView,
     private val classList: List<ClassData>,
     private val teacherList: List<TeacherData>,
     private val timeList: List<String>,
@@ -34,8 +36,8 @@ class ClassAdapter(
         if (position < classList.size && position < teacherList.size) {
             val className = classList[position]
             val teacherName = teacherList[position]
-            holder.classNameTextView.text = className.className
-            holder.teacherNameTextView.text = teacherName.teacherName
+            holder.className.text = className.className
+            holder.teacherName.text = teacherName.teacherName
 
             // Initialize selected times list for this position if not already present
             val selectedTimesList = selectedTimesMap.getOrPut(position) { mutableListOf() }
@@ -111,10 +113,35 @@ class ClassAdapter(
     }
 
     class ClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val classNameTextView: TextView = itemView.findViewById(R.id.classNameCheckbox)
-        val teacherNameTextView: TextView = itemView.findViewById(R.id.teacherCheckBox)
+        val className: CheckBox = itemView.findViewById(R.id.classNameCheckbox)
+        val teacherName: CheckBox = itemView.findViewById(R.id.teacherCheckBox)
         val timeSlotsSpinner: Spinner = itemView.findViewById(R.id.timeSlotsSpinner)
         val locationSlotsSpinner: Spinner = itemView.findViewById(R.id.locationSpinner)
+    }
+
+
+    fun getSelectedItems(): List<SelectedClassItem> {
+        val selectedItems = mutableListOf<SelectedClassItem>()
+
+        for (i in 0 until itemCount) {
+            val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? ClassViewHolder ?: continue
+            val classNameChecked = viewHolder.className.isChecked
+            val teacherNameChecked = viewHolder.teacherName.isChecked
+
+            if (classNameChecked && teacherNameChecked) {
+                val selectedLocation = viewHolder.locationSlotsSpinner.selectedItem.toString()
+                val selectedTimes = selectedTimesMap[i] ?: mutableListOf()
+
+                selectedItems.add(SelectedClassItem(
+                    className = viewHolder.className.text.toString(),
+                    teacherName = viewHolder.teacherName.text.toString(),
+                    location = selectedLocation,
+                    selectedTimes = selectedTimes
+                ))
+            }
+        }
+
+        return selectedItems
     }
 
     // Custom ArrayAdapter to handle dropdown view customization
@@ -149,4 +176,11 @@ class ClassAdapter(
             return textView
         }
     }
+
+    data class SelectedClassItem(
+        val className: String,
+        val teacherName: String,
+        val location: String,
+        val selectedTimes: List<String>
+    )
 }

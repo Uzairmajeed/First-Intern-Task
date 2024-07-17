@@ -22,6 +22,11 @@ import java.util.Locale
 class OnclickPtmCreation : Fragment() {
     private var _binding: FragmentOnclickPtmCreationBinding? = null
     private val binding get() = _binding!!
+    private lateinit var classAdapter: ClassAdapter
+
+    private  var classList = mutableListOf<ClassData>()
+    private var teacherList = mutableListOf<TeacherData>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,6 +83,7 @@ class OnclickPtmCreation : Fragment() {
         selectedWingNames?.let { wings ->
             authToken?.let { token ->
                 lifecycleScope.launch {
+                    val recyclerView = binding.classRecyclerView
                     val getAllTeacherNames = NetworkOperations(token, requireContext())
                     val response = getAllTeacherNames.getFromServer(wings)
                     Log.d("Teacher&ClassNamesResponse", response ?: "No response")
@@ -89,9 +95,9 @@ class OnclickPtmCreation : Fragment() {
                         val (classList, teacherList) = parseResponse(response)
 
                         if (locationList != null && classList.isNotEmpty() && teacherList.isNotEmpty()) {
-                            val adapter = ClassAdapter(classList, teacherList, timeList, locationList)
-                            binding.classRecyclerView.adapter = adapter
-                            binding.classRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                            classAdapter = ClassAdapter(recyclerView,classList, teacherList, timeList, locationList)
+                            recyclerView.adapter = classAdapter
+                            recyclerView.layoutManager = LinearLayoutManager(requireContext())
                         } else {
                             showToast("No data for selected wings.")
                         }
@@ -109,15 +115,40 @@ class OnclickPtmCreation : Fragment() {
         }
 
         binding.createPtmButton.setOnClickListener {
-            // Handle create PTM button action
-            // Implement your functionality here
+
+            val selectedItems = classAdapter.getSelectedItems()
+            val selectedItemsWithIds = mutableListOf<SelectedItemWithIds>()
+
+            for (item in selectedItems) {
+                val classId = classList.find { it.className == item.className }?.classId ?: -1
+                val teacherId = teacherList.find { it.teacherName == item.teacherName }?.teacherId ?: -1
+                val locationId = teacherList.find { it.teacherName == item.teacherName }?.locationId ?: -1
+
+                if (classId != -1 && teacherId != -1 && locationId != -1) {
+                    selectedItemsWithIds.add(
+                        SelectedItemWithIds(
+                            classId = classId,
+                            teacherId = teacherId,
+                            locationId = locationId,
+                            selectedTimes = item.selectedTimes
+                        )
+                    )
+                } else {
+                    Log.e("Error", "Matching ID not found for class: ${item.className}, teacher: ${item.teacherName}, location: ${item.location}")
+                }
+            }
+
+            // Log the selected items with IDs
+            for (item in selectedItemsWithIds) {
+                Log.d("SelectedItemsWithIds", "ClassId: ${item.classId}, TeacherId: ${item.teacherId}, LocationId: ${item.locationId}, Times: ${item.selectedTimes}")
+            }
         }
 
     }
 
     private fun parseResponse(response: String): Pair<List<ClassData>, List<TeacherData>> {
-        val classList = mutableListOf<ClassData>()
-        val teacherList = mutableListOf<TeacherData>()
+         classList = mutableListOf<ClassData>()
+         teacherList = mutableListOf<TeacherData>()
 
         val jsonObject = JSONObject(response)
         val dataArray = if (jsonObject.has("data")) jsonObject.getJSONArray("data") else null
