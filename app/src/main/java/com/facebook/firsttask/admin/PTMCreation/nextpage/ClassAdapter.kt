@@ -127,10 +127,11 @@ class ClassAdapter(
             val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? ClassViewHolder ?: continue
             val classNameChecked = viewHolder.className.isChecked
             val teacherNameChecked = viewHolder.teacherName.isChecked
+            val selectedTimes = selectedTimesMap[i] ?: mutableListOf()
 
-            if (classNameChecked && teacherNameChecked) {
+
+            if (classNameChecked && teacherNameChecked && selectedTimes.isNotEmpty()) {
                 val selectedLocation = viewHolder.locationSlotsSpinner.selectedItem.toString()
-                val selectedTimes = selectedTimesMap[i] ?: mutableListOf()
 
                 selectedItems.add(SelectedClassItem(
                     className = viewHolder.className.text.toString(),
@@ -177,10 +178,4 @@ class ClassAdapter(
         }
     }
 
-    data class SelectedClassItem(
-        val className: String,
-        val teacherName: String,
-        val location: String,
-        val selectedTimes: List<String>
-    )
 }

@@ -117,30 +117,63 @@ class OnclickPtmCreation : Fragment() {
         binding.createPtmButton.setOnClickListener {
 
             val selectedItems = classAdapter.getSelectedItems()
-            val selectedItemsWithIds = mutableListOf<SelectedItemWithIds>()
 
-            for (item in selectedItems) {
-                val classId = classList.find { it.className == item.className }?.classId ?: -1
-                val teacherId = teacherList.find { it.teacherName == item.teacherName }?.teacherId ?: -1
-                val locationId = teacherList.find { it.teacherName == item.teacherName }?.locationId ?: -1
+            if (selectedItems.isNullOrEmpty()) {
+                Toast.makeText(context, "Select Class,Teacher & FreezSlots", Toast.LENGTH_SHORT).show()
+            } else {
+                val selectedItemsWithIds = mutableListOf<SelectedItemWithIds>()
 
-                if (classId != -1 && teacherId != -1 && locationId != -1) {
-                    selectedItemsWithIds.add(
-                        SelectedItemWithIds(
-                            classId = classId,
-                            teacherId = teacherId,
-                            locationId = locationId,
-                            selectedTimes = item.selectedTimes
+                for (item in selectedItems) {
+                    val classId = classList.find { it.className == item.className }?.classId ?: -1
+                    val teacherId = teacherList.find { it.teacherName == item.teacherName }?.teacherId ?: -1
+                    val locationId = teacherList.find { it.teacherName == item.teacherName }?.locationId ?: -1
+                    // Extract startTime and endTime from selectedTimes
+                    val startTime = item.selectedTimes.firstOrNull() ?: ""
+                    val endTime = item.selectedTimes.lastOrNull() ?: ""
+
+                    if (classId != -1 && teacherId != -1 && locationId != -1) {
+                        selectedItemsWithIds.add(
+                            SelectedItemWithIds(
+                                classId = classId,
+                                teacherId = teacherId,
+                                locationId = locationId,
+                                startTime = startTime,
+                                endTime = endTime,
+                                selectedTimes = item.selectedTimes
+                            )
                         )
-                    )
-                } else {
-                    Log.e("Error", "Matching ID not found for class: ${item.className}, teacher: ${item.teacherName}, location: ${item.location}")
+                    } else {
+                        Log.e("Error", "Matching ID not found for class: ${item.className}, teacher: ${item.teacherName}, location: ${item.location}")
+                    }
                 }
-            }
+                // Log the selected items with IDs
+                for (item in selectedItemsWithIds) {
+                    Log.d("SelectedItemsWithIds", "ClassId: ${item.classId}, TeacherId: ${item.teacherId}, LocationId: ${item.locationId}, Times: ${item.selectedTimes}")
+                }
 
-            // Log the selected items with IDs
-            for (item in selectedItemsWithIds) {
-                Log.d("SelectedItemsWithIds", "ClassId: ${item.classId}, TeacherId: ${item.teacherId}, LocationId: ${item.locationId}, Times: ${item.selectedTimes}")
+                // Call the network function
+                lifecycleScope.launch {
+                    try {
+                        if (authToken != null) {
+                            NetworkOperations(authToken,requireContext()).createPTM(
+                                selectedItemsWithIds,
+                                selectedWingNames,
+                                selectedDuration,
+                                selectedStartTime,
+                                selectedEndTime,
+                                ptmDate,
+                                isOnlineChecked,
+                                isOfflineChecked,
+                                timeSelections
+                            )
+                        }
+                        // Handle success (e.g., show a success message or navigate to another screen)
+                    } catch (e: Exception) {
+                        // Handle error (e.g., show an error message)
+                    }
+                }
+
+                
             }
         }
 
@@ -204,8 +237,12 @@ class OnclickPtmCreation : Fragment() {
             }
         }
 
-        return timeList
+        // Convert all times to uppercase AM/PM
+        return timeList.map { time ->
+            time.replace("am", "AM").replace("pm", "PM")
+        }
     }
+
 
     private fun parseDuration(durationString: String): Int {
         // Extract numeric part from the duration string and parse it
