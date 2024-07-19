@@ -125,8 +125,12 @@ class NetworkOperations(private val authToken: String, private val context: Cont
 
         // Create teacher attributes list
         val teacherAttributes = selectedItemsWithIds.map { selectedItem ->
-            val timeslotDtos = selectedItem.selectedTimes.map { time ->
-                TimeslotDto(formatTime(time), formatTime(time))
+            val timeslotDtos = selectedItem.selectedTimes.map { timeRange ->
+                val times = timeRange.split(" - ")
+                val startTime = times.getOrNull(0) ?: ""
+                val endTime = times.getOrNull(1) ?: ""
+
+                TimeslotDto(formatTime(startTime), formatTime(endTime))
             }
 
             // Log timeslotDtos for debugging purposes
@@ -140,7 +144,6 @@ class NetworkOperations(private val authToken: String, private val context: Cont
             )
         }
 
-        // Format ptmDate to ISO8601 format if needed
         // Format ptmDate to ISO8601 format if needed
         val formattedPtmDate = ptmDate?.let {
             try {

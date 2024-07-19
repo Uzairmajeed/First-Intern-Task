@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.R
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class TimeSelectionAdapter(private val timeSelections: MutableList<TimeSelection>) :
     RecyclerView.Adapter<TimeSelectionAdapter.TimeSelectionViewHolder>() {
@@ -39,16 +42,22 @@ class TimeSelectionAdapter(private val timeSelections: MutableList<TimeSelection
         private val endTimeSpinner: Spinner = itemView.findViewById(R.id.endTimeSpinner)
 
         fun bind(timeSelection: TimeSelection) {
-            val startTimes = arrayOf("01:00 AM", "02:00 AM", "03:00 AM", "04:00 AM", "05:00 AM",
-                "06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
-                "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM",
-                "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM",
-                "12:00 AM")
-            val endTimes = arrayOf("01:00 AM", "02:00 AM", "03:00 AM", "04:00 AM", "05:00 AM",
-                "06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
-                "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM",
-                "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM",
-                "12:00 AM")
+            val timeOptions = mutableListOf<String>()
+            val formatter = SimpleDateFormat("hh:mm a", Locale.US)
+
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+
+            while (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR)) {
+                timeOptions.add(formatter.format(calendar.time))
+                calendar.add(Calendar.MINUTE, 5)
+            }
+
+            // Convert to array if needed
+            val timeOptionsArray = timeOptions.toTypedArray()
+            val startTimes = timeOptionsArray
+            val endTimes = timeOptionsArray
 
             setupSpinner(startTimeSpinner, startTimes, timeSelection.startTime) {
                 timeSelection.startTime = it

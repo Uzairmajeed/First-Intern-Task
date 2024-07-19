@@ -183,6 +183,33 @@ class PtmCreationFragment : Fragment() {
                     // Collect data from TimeSelectionAdapter
                     val timeSelectionData = timeSelectionAdapter.getTimeSelectionData()
 
+                    // Parse selected duration to integer
+                    val selectedDurationMinutes = selectedDuration?.toIntOrNull()
+
+                    // Check if each item in timeSelectionData has a valid duration
+                    val isValidDuration = timeSelectionData.all { timeSelection ->
+                        val startTime = timeSelection.startTime
+                        val endTime = timeSelection.endTime
+
+                        // Calculate duration between startTime and endTime in minutes
+                        val startCalendar = Calendar.getInstance().apply {
+                            time = SimpleDateFormat("hh:mm a", Locale.US).parse(startTime)
+                        }
+                        val endCalendar = Calendar.getInstance().apply {
+                            time = SimpleDateFormat("hh:mm a", Locale.US).parse(endTime)
+                        }
+
+                        val durationInMinutes = (endCalendar.timeInMillis - startCalendar.timeInMillis) / (1000 * 60)
+
+                        // Check if the duration is less than the selectedDurationMinutes
+                        durationInMinutes < (selectedDurationMinutes ?: Int.MAX_VALUE)
+                    }
+
+                    if (!isValidDuration) {
+                        Toast.makeText(requireContext(), "Lunch time interval should be less than the selected duration.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
 
                     // Create a bundle to pass the selected data
                     val bundle = Bundle().apply {
@@ -208,11 +235,6 @@ class PtmCreationFragment : Fragment() {
                 }
             }
         }
-
-
-
-
-
         getAllWings()
     }
 
@@ -241,6 +263,8 @@ class PtmCreationFragment : Fragment() {
             for (i in 0 until dataArray.length()) {
                 val wingObject = dataArray.getJSONObject(i)
                 val wingName = wingObject.getString("wingName")
+                val wingId =  wingObject.getString("wingId")
+                Log.d("windIds",wingId)
 
                 val checkBox = CheckBox(context).apply {
                     text = wingName
@@ -274,7 +298,7 @@ class PtmCreationFragment : Fragment() {
     }
 
     private fun addTimeSelection() {
-        timeSelections.add(TimeSelection("null", "null"))
+        timeSelections.add(TimeSelection("8:00 AM", "9:00 AM"))
         timeSelectionAdapter.notifyDataSetChanged()
     }
 
