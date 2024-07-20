@@ -32,7 +32,10 @@ class PtmCreationFragment : Fragment() {
     // Define a list to hold time selections
     private val timeSelections = mutableListOf<TimeSelection>()
     private lateinit var timeSelectionAdapter: TimeSelectionAdapter
-    //private val timeSelections = mutableListOf(TimeSelection("", "")) // Initialize with one item
+
+    private var checkBoxList = mutableListOf<CheckBox>()
+    private var wingMap = mutableMapOf<String, String>() // Map to store wing names and IDs
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -132,8 +135,7 @@ class PtmCreationFragment : Fragment() {
 
         binding.nextButton.setOnClickListener {
             // Get selected wing names
-            val selectedWingNames = getSelectedWingNames()
-
+            val selectedWings = getSelectedWings(wingMap, checkBoxList)
             // Get selected spinner values
             val selectedDuration = binding.durationSpinner.selectedItem?.toString()
             val selectedStartTime = binding.starttimeSpinner.selectedItem?.toString()
@@ -145,6 +147,10 @@ class PtmCreationFragment : Fragment() {
             // Get the states of the CheckBoxes
             val isOnlineChecked = binding.onlineCheckBox.isChecked
             val isOfflineChecked = binding.offlineCheckBox.isChecked
+
+            // Extract selected wing names and IDs
+            val selectedWingNames = selectedWings.map { it.first }
+            val selectedWingIds = selectedWings.map { it.second }
 
             // Check if at least one checkbox is checked
             if (!isOnlineChecked && !isOfflineChecked) {
@@ -172,6 +178,7 @@ class PtmCreationFragment : Fragment() {
                 else -> {
                     // Log the selected spinner values and additional data
                     val logMessage = "Selected Wing Names: $selectedWingNames\n" +
+                            "Selected Wing IDs: $selectedWingIds\n" +
                             "Selected Duration: $selectedDuration\n" +
                             "Selected Start Time: $selectedStartTime\n" +
                             "Selected End Time: $selectedEndTime\n" +
@@ -214,6 +221,7 @@ class PtmCreationFragment : Fragment() {
                     // Create a bundle to pass the selected data
                     val bundle = Bundle().apply {
                         putStringArrayList("selectedWingNames", ArrayList(selectedWingNames))
+                        putStringArrayList("selectedWingIds", ArrayList(selectedWingIds))
                         putString("selectedDuration", selectedDuration)
                         putString("selectedStartTime", selectedStartTime)
                         putString("selectedEndTime", selectedEndTime)
@@ -258,13 +266,14 @@ class PtmCreationFragment : Fragment() {
             // Clear any existing checkboxes
             checkboxContainer.removeAllViews()
 
-            val checkBoxList = mutableListOf<CheckBox>()
+             checkBoxList = mutableListOf()
+             wingMap = mutableMapOf() // Map to store wing names and IDs
 
             for (i in 0 until dataArray.length()) {
                 val wingObject = dataArray.getJSONObject(i)
                 val wingName = wingObject.getString("wingName")
-                val wingId =  wingObject.getString("wingId")
-                Log.d("windIds",wingId)
+                val wingId = wingObject.getString("wingId")
+                Log.d("wingIds", wingId)
 
                 val checkBox = CheckBox(context).apply {
                     text = wingName
@@ -273,6 +282,7 @@ class PtmCreationFragment : Fragment() {
 
                 checkboxContainer.addView(checkBox)
                 checkBoxList.add(checkBox)
+                wingMap[wingName] = wingId // Store the wing name and ID in the map
             }
 
             // Set up the main checkbox to check/uncheck all other checkboxes
@@ -286,23 +296,14 @@ class PtmCreationFragment : Fragment() {
         }
     }
 
-    private fun getSelectedWingNames(): List<String> {
-        val selectedWingNames = mutableListOf<String>()
-        for (i in 0 until binding.checkboxContainer.childCount) {
-            val checkBox = binding.checkboxContainer.getChildAt(i) as CheckBox
-            if (checkBox.isChecked) {
-                selectedWingNames.add(checkBox.text.toString())
-            }
-        }
-        return selectedWingNames
+    private fun getSelectedWings(wingMap: Map<String, String>, checkBoxList: List<CheckBox>): List<Pair<String, String>> {
+        return checkBoxList.filter { it.isChecked }.map { it.text.toString() to wingMap[it.text.toString()]!! }
     }
 
     private fun addTimeSelection() {
         timeSelections.add(TimeSelection("8:00 AM", "9:00 AM"))
         timeSelectionAdapter.notifyDataSetChanged()
     }
-
-
 
 
     override fun onDestroyView() {

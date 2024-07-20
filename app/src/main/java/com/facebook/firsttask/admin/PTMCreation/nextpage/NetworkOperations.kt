@@ -99,7 +99,7 @@ class NetworkOperations(private val authToken: String, private val context: Cont
 
     suspend fun createPTM(
         selectedItemsWithIds: List<SelectedItemWithIds>,
-        selectedWingNames: List<String>?,
+        selectedWingIds: List<String>?,
         selectedDuration: String?,
         selectedStartTime: String?,
         selectedEndTime: String?,
@@ -109,7 +109,7 @@ class NetworkOperations(private val authToken: String, private val context: Cont
         timeSelections: List<TimeSelection>?
     ) {
         // Convert selectedWingNames to integers
-        val wings = intArrayOf(1,2,3,4)
+        val wings = selectedWingIds
 
         // Determine the meeting type
         val meetingType = when {

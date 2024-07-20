@@ -44,6 +44,7 @@ class OnclickPtmCreation : Fragment() {
 
         // Retrieve selected wing names from arguments
         val selectedWingNames = arguments?.getStringArrayList("selectedWingNames")
+        val selectedWingIds = arguments?.getStringArrayList("selectedWingIds")
         val selectedDuration = arguments?.getString("selectedDuration")
         val selectedStartTime = arguments?.getString("selectedStartTime")
         val selectedEndTime = arguments?.getString("selectedEndTime")
@@ -61,6 +62,7 @@ class OnclickPtmCreation : Fragment() {
         }
 
         Log.d("OnclickPtmCreation", "Selected Wing Names: $selectedWingNames")
+        Log.d("OnclickPtmCreation", "Selected Wing Ids: $selectedWingIds")
         Log.d("OnclickPtmCreation", "Selected Duration: $selectedDuration")
         Log.d("OnclickPtmCreation", "Selected Start Time: $selectedStartTime")
         Log.d("OnclickPtmCreation", "Selected End Time: $selectedEndTime")
@@ -157,7 +159,7 @@ class OnclickPtmCreation : Fragment() {
                         if (authToken != null) {
                             NetworkOperations(authToken,requireContext()).createPTM(
                                 selectedItemsWithIds,
-                                selectedWingNames,
+                                selectedWingIds,
                                 selectedDuration,
                                 selectedStartTime,
                                 selectedEndTime,
@@ -180,8 +182,8 @@ class OnclickPtmCreation : Fragment() {
     }
 
     private fun parseResponse(response: String): Pair<List<ClassData>, List<TeacherData>> {
-         classList = mutableListOf<ClassData>()
-         teacherList = mutableListOf<TeacherData>()
+         classList = mutableListOf()
+         teacherList = mutableListOf()
 
         val jsonObject = JSONObject(response)
         val dataArray = if (jsonObject.has("data")) jsonObject.getJSONArray("data") else null
