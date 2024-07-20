@@ -1,4 +1,4 @@
-package com.facebook.firsttask.admin
+package com.facebook.firsttask.admin.dashboard
 
 import android.util.Log
 import io.ktor.client.HttpClient

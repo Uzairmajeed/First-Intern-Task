@@ -1,4 +1,4 @@
-package com.facebook.firsttask.admin.PTMCreation.nextpage
+package com.facebook.firsttask.admin.dashboard.PTMCreation.nextpage
 
 import android.content.Context
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.firsttask.R
-import com.facebook.firsttask.admin.AdminDashboardFragment
-import com.facebook.firsttask.admin.PTMCreation.TimeSelection
+import com.facebook.firsttask.admin.dashboard.AdminDashboardFragment
+import com.facebook.firsttask.admin.dashboard.PTMCreation.TimeSelection
 import com.facebook.firsttask.databinding.FragmentOnclickPtmCreationBinding
 import kotlinx.coroutines.launch
 import org.json.JSONObject

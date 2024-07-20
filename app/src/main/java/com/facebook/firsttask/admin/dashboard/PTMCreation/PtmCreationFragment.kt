@@ -1,4 +1,4 @@
-package com.facebook.firsttask.admin.PTMCreation
+package com.facebook.firsttask.admin.dashboard.PTMCreation
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -15,7 +15,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.firsttask.R
-import com.facebook.firsttask.admin.PTMCreation.nextpage.OnclickPtmCreation
+import com.facebook.firsttask.admin.dashboard.PTMCreation.nextpage.OnclickPtmCreation
 import com.facebook.firsttask.databinding.FragmentPtmCreationBinding
 import kotlinx.coroutines.launch
 import org.json.JSONArray

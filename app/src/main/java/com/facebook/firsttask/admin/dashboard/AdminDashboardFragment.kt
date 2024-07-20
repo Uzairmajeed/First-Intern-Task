@@ -1,4 +1,4 @@
-package com.facebook.firsttask.admin
+package com.facebook.firsttask.admin.dashboard
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.facebook.firsttask.MainActivity
 import com.facebook.firsttask.R
-import com.facebook.firsttask.admin.PTMCreation.PtmCreationFragment
+import com.facebook.firsttask.admin.AdminPage
+import com.facebook.firsttask.admin.dashboard.PTMCreation.PtmCreationFragment
 import com.facebook.firsttask.databinding.FragmentAdminDashboardBinding
 import kotlinx.coroutines.launch
 import org.json.JSONObject

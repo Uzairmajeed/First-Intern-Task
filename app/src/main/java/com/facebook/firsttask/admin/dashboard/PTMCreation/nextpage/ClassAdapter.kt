@@ -1,4 +1,4 @@
-package com.facebook.firsttask.admin.PTMCreation.nextpage
+package com.facebook.firsttask.admin.dashboard.PTMCreation.nextpage
 
 import android.content.Context
 import android.graphics.Color
@@ -133,12 +133,14 @@ class ClassAdapter(
             if (classNameChecked && teacherNameChecked && selectedTimes.isNotEmpty()) {
                 val selectedLocation = viewHolder.locationSlotsSpinner.selectedItem.toString()
 
-                selectedItems.add(SelectedClassItem(
+                selectedItems.add(
+                    SelectedClassItem(
                     className = viewHolder.className.text.toString(),
                     teacherName = viewHolder.teacherName.text.toString(),
                     location = selectedLocation,
                     selectedTimes = selectedTimes
-                ))
+                )
+                )
             }
         }
 

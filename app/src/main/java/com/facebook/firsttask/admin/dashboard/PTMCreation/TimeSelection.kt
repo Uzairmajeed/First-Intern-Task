@@ -1,4 +1,4 @@
-package com.facebook.firsttask.admin.PTMCreation
+package com.facebook.firsttask.admin.dashboard.PTMCreation
 
 import android.os.Parcel
 import android.os.Parcelable

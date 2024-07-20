@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/rounded_corners"
-    tools:context=".admin.PTMCreation.nextpage.OnclickPtmCreation">
+    tools:context=".admin.dashboard.PTMCreation.nextpage.OnclickPtmCreation">
 
     <LinearLayout
         android:id="@+id/rootlayout"

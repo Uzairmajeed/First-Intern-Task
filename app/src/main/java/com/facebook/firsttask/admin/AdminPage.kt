@@ -10,6 +10,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.facebook.firsttask.MainActivity
 import com.facebook.firsttask.R
+import com.facebook.firsttask.admin.dashboard.AdminDashboardFragment
+import com.facebook.firsttask.admin.ptm_management.PTM_ManageFragment
 import com.facebook.firsttask.databinding.ActivityAdminPageBinding
 
 class AdminPage : AppCompatActivity() {
