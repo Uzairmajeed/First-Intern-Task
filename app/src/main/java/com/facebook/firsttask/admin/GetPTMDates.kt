@@ -20,7 +20,7 @@ class GetPTMDates (private val authToken: String) {
 
         }
         val responseBody = response.receive<String>()
-        Log.d("Response",responseBody)
+        Log.d("ResponseOfPTMDates",responseBody)
         return responseBody
     }
 }

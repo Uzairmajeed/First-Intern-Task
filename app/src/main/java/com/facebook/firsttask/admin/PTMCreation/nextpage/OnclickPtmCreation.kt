@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.firsttask.R
+import com.facebook.firsttask.admin.AdminDashboardFragment
 import com.facebook.firsttask.admin.PTMCreation.TimeSelection
 import com.facebook.firsttask.databinding.FragmentOnclickPtmCreationBinding
 import kotlinx.coroutines.launch
@@ -167,7 +169,12 @@ class OnclickPtmCreation : Fragment() {
                                 isOnlineChecked,
                                 isOfflineChecked,
                                 timeSelections
-                            )
+                            ){
+                                // Navigation callback on success
+                                parentFragmentManager.beginTransaction()
+                                    .replace(R.id.fragment_container, AdminDashboardFragment()) // Navigate to AdminDashboardFragment
+                                    .commit()
+                            }
                         }
                         // Handle success (e.g., show a success message or navigate to another screen)
                     } catch (e: Exception) {

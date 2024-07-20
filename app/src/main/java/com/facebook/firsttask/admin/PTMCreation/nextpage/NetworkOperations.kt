@@ -106,7 +106,8 @@ class NetworkOperations(private val authToken: String, private val context: Cont
         ptmDate: String?,
         isOnlineChecked: Boolean?,
         isOfflineChecked: Boolean?,
-        timeSelections: List<TimeSelection>?
+        timeSelections: List<TimeSelection>?,
+        onSuccess: () -> Unit
     ) {
         // Convert selectedWingNames to integers
         val wings = selectedWingIds
@@ -148,24 +149,31 @@ class NetworkOperations(private val authToken: String, private val context: Cont
         val formattedPtmDate = ptmDate?.let {
             try {
                 // Determine the format of ptmDate and parse accordingly
+                Log.d("FormattedPtmDate", "Formatted PTM Date before Change: $ptmDate")
+
                 val parsedDate = when {
                     it.matches("\\d{4}-\\d{2}-\\d{2}".toRegex()) -> {
                         // If already in ISO8601 format, directly parse
-                        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it)
+                        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).apply {
+                            timeZone = TimeZone.getTimeZone("UTC")
+                        }.parse(it)
                     }
-                    else -> {
+                    it.matches("\\d{1,2}/\\d{1,2}/\\d{4}".toRegex()) -> {
                         // Attempt to parse assuming day/month/year format
-                        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(it)
+                        SimpleDateFormat("d/M/yyyy", Locale.getDefault()).apply {
+                            timeZone = TimeZone.getTimeZone("UTC")
+                        }.parse(it)
                     }
+                    else -> throw ParseException("Unknown date format", 0)
                 }
 
                 // Format parsedDate to ISO8601 format
                 val isoFormattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).apply {
-                    timeZone = TimeZone.getTimeZone("UTC") // Set UTC timezone for ISO8601 format
+                    timeZone = TimeZone.getTimeZone("UTC")
                 }.format(parsedDate)
 
                 // Log the parsed and formatted date for verification
-                Log.d("FormattedPtmDate", "Formatted PTM Date: $isoFormattedDate")
+                Log.d("FormattedPtmDate", "Formatted PTM Date After Change: $isoFormattedDate")
 
                 isoFormattedDate
             } catch (e: Exception) {
@@ -173,10 +181,6 @@ class NetworkOperations(private val authToken: String, private val context: Cont
                 null
             }
         }
-
-
-
-
         // Create PTM request object
         val ptmRequest = mapOf(
             "date" to formattedPtmDate,
@@ -205,6 +209,8 @@ class NetworkOperations(private val authToken: String, private val context: Cont
                 val responseBody = response.receive<String>()
                 Log.d("CreatePTMResponse", responseBody)
                 showToast("Successfully Created ")
+                onSuccess() // Trigger the success callback
+
 
             } else {
                 val responseBody = response.receive<String>()

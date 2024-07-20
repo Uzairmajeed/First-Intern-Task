@@ -20,19 +20,6 @@ data class SelectedItemWithIds(
     val selectedTimes: List<String>
 )
 
-
-
-data class PTMRequest(
-    val date: String?,
-    val timeslotDuration: String?,
-    val ptmStartTime: String?,
-    val ptmEndTime: String?,
-    val meetingType: Int,
-    val wings: List<String>?,
-    val lunchSlots: List<LunchSlot>,
-    val teacherAttributes: List<TeacherAttribute>
-)
-
 data class LunchSlot(
     val lunchStartTime: String?,
     val lunchEndTime: String?
