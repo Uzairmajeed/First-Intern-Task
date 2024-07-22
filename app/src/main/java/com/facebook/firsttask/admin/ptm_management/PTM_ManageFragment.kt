@@ -49,7 +49,7 @@ class PTM_ManageFragment : Fragment() {
                 val response = networkForPtmManagement.getAllPtmDatesForLocation()
                 response?.data?.let { ptmDataList ->
                     withContext(Dispatchers.Main) {
-                        ptmAdapter = GetAllPtmForLocation_Adpater(ptmDataList)
+                        ptmAdapter = GetAllPtmForLocation_Adpater(ptmDataList,childFragmentManager)
                         binding.getallotmdatesforlocation.adapter = ptmAdapter
                     }
                 } ?: run {

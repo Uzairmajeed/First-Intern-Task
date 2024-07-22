@@ -7,10 +7,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.R
 
-class GetAllPtmForLocation_Adpater(private val ptmList: List<PtmData>) : RecyclerView.Adapter<GetAllPtmForLocation_Adpater.PtmViewHolder>() {
+class GetAllPtmForLocation_Adpater(
+    private val ptmList: List<PtmData>,
+    private val fragmentManager: FragmentManager
+
+) : RecyclerView.Adapter<GetAllPtmForLocation_Adpater.PtmViewHolder>() {
 
     class PtmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemDate: TextView = itemView.findViewById(R.id.itemDate)
@@ -35,7 +40,9 @@ class GetAllPtmForLocation_Adpater(private val ptmList: List<PtmData>) : Recycle
 
         // Set click listeners if necessary
         holder.itemActionButton.setOnClickListener {
-            // Handle action button click
+            val wingNames = ptmItem.wings.map { it.wingName }
+            val dialogFragment = WingListDialogFragment.newInstance(wingNames)
+            dialogFragment.show(fragmentManager, "WingListDialogFragment")
         }
 
         holder.itemDropdownButton.setOnClickListener {
