@@ -56,7 +56,7 @@ class NetworkOperations(private val authToken: String, private val context: Cont
         }
     }
 
-    suspend fun getAllLocations(): List<String>? {
+    suspend fun getAllLocations(): List<Location>? {
         return try {
             val url = "http://68.178.165.107:91/api/Teacher/GetAllLocations"
 
@@ -79,22 +79,24 @@ class NetworkOperations(private val authToken: String, private val context: Cont
         }
     }
 
-    private fun parseLocations(response: String): List<String> {
-        val locationList = mutableListOf<String>()
+    private fun parseLocations(response: String): List<Location> {
+        val locationList = mutableListOf<Location>()
         try {
             val jsonObject = JSONObject(response)
             val dataArray = jsonObject.getJSONArray("data")
 
             for (i in 0 until dataArray.length()) {
                 val locationObject = dataArray.getJSONObject(i)
+                val locationId = locationObject.getInt("location_Id")
                 val locationName = locationObject.getString("locationName")
-                locationList.add(locationName)
+                locationList.add(Location(locationId, locationName))
             }
         } catch (e: JSONException) {
             Log.e("ParseLocationsError", "Error parsing locations", e)
         }
         return locationList
     }
+
 
 
     suspend fun createPTM(

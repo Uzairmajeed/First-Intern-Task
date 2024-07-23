@@ -28,6 +28,8 @@ class OnclickPtmCreation : Fragment() {
 
     private  var classList = mutableListOf<ClassData>()
     private var teacherList = mutableListOf<TeacherData>()
+    private var locations: List<Location> = emptyList()
+
 
 
     override fun onCreateView(
@@ -93,13 +95,13 @@ class OnclickPtmCreation : Fragment() {
                     Log.d("Teacher&ClassNamesResponse", response ?: "No response")
 
                     // Fetch locations
-                    val locationList = getAllTeacherNames.getAllLocations()
+                     locations = getAllTeacherNames.getAllLocations()!!
 
                     if (response != null) {
                         val (classList, teacherList) = parseResponse(response)
 
-                        if (locationList != null && classList.isNotEmpty() && teacherList.isNotEmpty()) {
-                            classAdapter = ClassAdapter(recyclerView,classList, teacherList, timeList, locationList)
+                        if (locations != null && classList.isNotEmpty() && teacherList.isNotEmpty()) {
+                            classAdapter = ClassAdapter(recyclerView,classList, teacherList, timeList, locations.map { it.locationName })
                             recyclerView.adapter = classAdapter
                             recyclerView.layoutManager = LinearLayoutManager(requireContext())
                         } else {

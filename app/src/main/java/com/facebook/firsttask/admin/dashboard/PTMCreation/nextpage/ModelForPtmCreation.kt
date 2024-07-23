@@ -37,6 +37,10 @@ data class TimeslotDto(
     val endTime: String
 )
 
+data class Location(val locationId: Int, val locationName: String)
+
+
+
 
 
 

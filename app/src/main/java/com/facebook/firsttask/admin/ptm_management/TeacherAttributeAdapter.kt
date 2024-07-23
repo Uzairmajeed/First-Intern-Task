@@ -12,6 +12,7 @@ import com.facebook.firsttask.R
 
 class TeacherAttributeAdapter(
     private val teacherAttributes: List<TeacherAttribute>,
+    private val ptmId: String, // Add ptmId parameter
     private val fragmentManager: FragmentManager,
 
     ) : RecyclerView.Adapter<TeacherAttributeAdapter.TeacherAttributeViewHolder>() {
@@ -37,18 +38,12 @@ class TeacherAttributeAdapter(
         holder.locationName.text = teacherAttribute.locationName ?: "N/A"
         holder.className.text = teacherAttribute.className
 
-        Log.d("Location ID,Teacher ID ,PTmid", "${teacherAttribute.locationId.toString()}" +
-                "${teacherAttribute.teacherAttId.toString()}")
+        Log.d("Teacher ID", "${teacherAttribute.teacherAttId}")
+
 
         holder.editLocationButton.setOnClickListener {
-            val dialogFragment = teacherAttribute.teacherName?.let { it1 ->
-                EditLocationDialogFragment.newInstance(
-                    it1
-                )
-            }
-            if (dialogFragment != null) {
-                dialogFragment.show(fragmentManager, "EditLocationDialog")
-            }
+            val dialogFragment = EditLocationDialogFragment.newInstance(teacherAttribute.teacherName,teacherAttribute.teacherAttId, ptmId)
+            dialogFragment.show(fragmentManager, "EditLocationDialog")
         }
     }
 

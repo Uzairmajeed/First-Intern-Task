@@ -28,7 +28,7 @@ class PTM_ManageFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val sharedPreferences = requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
         val authToken = sharedPreferences.getString("auth_token", null)
-        networkForPtmManagement = authToken?.let { NetworkForPtmManagement(it) }!!
+        networkForPtmManagement = authToken?.let { NetworkForPtmManagement(it,requireContext()) }!!
     }
 
     override fun onCreateView(

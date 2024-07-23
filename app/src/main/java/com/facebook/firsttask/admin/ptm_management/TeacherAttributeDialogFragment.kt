@@ -12,14 +12,20 @@ import com.facebook.firsttask.R
 class TeacherAttributeDialogFragment : DialogFragment() {
 
     private lateinit var teacherAttributes: List<TeacherAttribute>
+    private lateinit var ptmId: String
+
 
     companion object {
         private const val ARG_TEACHER_ATTRIBUTES = "teacher_attributes"
+        private const val ARG_PTM_ID = "ptm_id"
 
-        fun newInstance(teacherAttributes: List<TeacherAttribute>): TeacherAttributeDialogFragment {
+
+        fun newInstance(teacherAttributes: List<TeacherAttribute>, ptmId: Int): TeacherAttributeDialogFragment {
             val fragment = TeacherAttributeDialogFragment()
-            val args = Bundle()
-            args.putParcelableArrayList(ARG_TEACHER_ATTRIBUTES, ArrayList(teacherAttributes))
+            val args = Bundle().apply {
+                putParcelableArrayList(ARG_TEACHER_ATTRIBUTES, ArrayList(teacherAttributes))
+                putString(ARG_PTM_ID, ptmId.toString())
+            }
             fragment.arguments = args
             return fragment
         }
@@ -28,6 +34,8 @@ class TeacherAttributeDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         teacherAttributes = arguments?.getParcelableArrayList(ARG_TEACHER_ATTRIBUTES) ?: emptyList()
+        ptmId = arguments?.getString(ARG_PTM_ID) ?: ""
+
     }
 
     override fun onCreateView(
@@ -41,6 +49,6 @@ class TeacherAttributeDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewTeacherAttributes)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = TeacherAttributeAdapter(teacherAttributes,childFragmentManager)
+        recyclerView.adapter = TeacherAttributeAdapter(teacherAttributes,ptmId,childFragmentManager)
     }
 }
