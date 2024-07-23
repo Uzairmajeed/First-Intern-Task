@@ -46,7 +46,8 @@ class GetAllPtmForLocation_Adpater(
         }
 
         holder.itemDropdownButton.setOnClickListener {
-            // Handle dropdown button click
+            val dialogFragment = TeacherAttributeDialogFragment.newInstance(ptmItem.teacherAttributes)
+            dialogFragment.show(fragmentManager, "TeacherAttributeDialogFragment")
         }
     }
 
