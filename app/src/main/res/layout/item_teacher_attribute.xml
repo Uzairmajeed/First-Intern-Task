@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:stretchColumns="1"> <!-- Stretch the columns to evenly distribute space -->
 
-    <TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
         <TextView
             android:id="@+id/teacherName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Teacher Name"
@@ -15,36 +20,37 @@
 
         <TextView
             android:id="@+id/className"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Class Name"
+            android:layout_marginStart="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:padding="5dp"/>
 
         <TextView
             android:id="@+id/teacherEmail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Teacher Email"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:padding="5dp"/>
 
-
         <TextView
             android:id="@+id/locationName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Location Name"
+            android:layout_marginStart="50dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:padding="5dp"/>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@android:color/black" />
+            android:background="#31CCAEAE" />
 
         <ImageButton
             android:id="@+id/editlocationButton"
@@ -59,6 +65,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/black" />
-
+        android:background="#31CCAEAE" />
 </TableLayout>

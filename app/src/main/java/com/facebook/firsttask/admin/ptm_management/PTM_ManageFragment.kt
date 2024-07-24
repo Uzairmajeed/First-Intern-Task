@@ -44,6 +44,11 @@ class PTM_ManageFragment : Fragment() {
 
         binding.getallotmdatesforlocation.layoutManager = LinearLayoutManager(context)
 
+        // Initial data load
+        loadData()
+    }
+
+    private fun loadData() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = networkForPtmManagement.getAllPtmDatesForLocation()

@@ -4,21 +4,20 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F1EEEE"
-            android:orientation="vertical">
+            android:background="#F1EEEE">
 
             <TableRow>
                 <TextView
                     android:id="@+id/nameTextView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
                     android:text="Name"
@@ -33,7 +32,7 @@
                     android:textColor="@android:color/black"
                     android:text="Class"
                     android:gravity="center_vertical"
-                    android:layout_marginStart="130dp"
+                    android:layout_marginStart="120dp"
                     android:textAppearance="?android:textAppearanceMedium" />
                 <TextView
                     android:id="@+id/emailTextView"
@@ -43,7 +42,7 @@
                     android:textColor="@android:color/black"
                     android:text="Email"
                     android:gravity="center_vertical"
-                    android:layout_marginStart="70dp"
+                    android:layout_marginStart="130dp"
                     android:textAppearance="?android:textAppearanceMedium" />
                 <TextView
                     android:id="@+id/locationTextView"
@@ -68,6 +67,7 @@
             </TableRow>
 
         </TableLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTeacherAttributes"
