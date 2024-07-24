@@ -68,12 +68,17 @@
 
         </TableLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewTeacherAttributes"
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_height="wrap_content">
+            <TableRow>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTeacherAttributes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+            </TableRow>
+        </TableLayout>
 
     </LinearLayout>
 
