@@ -9,6 +9,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.facebook.firsttask.MainActivity
+import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
 import com.facebook.firsttask.admin.dashboard.AdminDashboardFragment
 import com.facebook.firsttask.admin.ptm_management.PTM_ManageFragment
@@ -18,6 +19,8 @@ class AdminPage : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminPageBinding
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var preferencesManager: PreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminPageBinding.inflate(layoutInflater)
@@ -25,6 +28,8 @@ class AdminPage : AppCompatActivity() {
         drawerLayout = binding.drawerLayout
         val navigationView = binding.navView
         val openDrawerButton: ImageButton = binding.openDrawerButton
+
+        preferencesManager = PreferencesManager(this)
 
 
         // Open the drawer when the button is clicked
@@ -99,11 +104,7 @@ class AdminPage : AppCompatActivity() {
 
     private fun logoutUser() {
         // Clear login state
-        val sharedPreferences = getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            putBoolean("isLoggedInAsAdmin", false)
-            apply()
-        }
+        preferencesManager.setLoggedInAsAdmin(false)
 
         // Navigate back to MainActivity
         val intent = Intent(this@AdminPage, MainActivity::class.java)

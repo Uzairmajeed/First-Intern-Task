@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
 import com.facebook.firsttask.databinding.FragmentPTMManageBinding
 import com.google.gson.Gson
@@ -23,11 +24,13 @@ class PTM_ManageFragment : Fragment() {
     private var _binding: FragmentPTMManageBinding? = null
     private val binding get() = _binding!!
     private lateinit var ptmAdapter: GetAllPtmForLocation_Adpater
+    private lateinit var preferencesManager: PreferencesManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences = requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-        val authToken = sharedPreferences.getString("auth_token", null)
+        preferencesManager = PreferencesManager(requireContext())
+        val authToken = preferencesManager.getAuthToken()
         networkForPtmManagement = authToken?.let { NetworkForPtmManagement(it,requireContext()) }!!
     }
 

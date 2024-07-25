@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val loginRepository = LoginRepository()
+    private lateinit var preferencesManager: PreferencesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,20 +26,17 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // Check if the user is already logged in as an admin
-        val sharedPreferences = getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-        val isLoggedInAsAdmin = sharedPreferences.getBoolean("isLoggedInAsAdmin", false)
-        val isLoggedInAsParent = sharedPreferences.getBoolean("isLoggedInAsParent", false)
+        preferencesManager = PreferencesManager(this)
 
-        if (isLoggedInAsParent) {
+        // Check if the user is already logged in as an admin or parent
+        if (preferencesManager.isLoggedInAsParent()) {
             navigateToParentDashBoard()
             finish() // Finish MainActivity to prevent going back to it on back press
         }
-        if (isLoggedInAsAdmin) {
+        if (preferencesManager.isLoggedInAsAdmin()) {
             navigateToAdminDashboard()
             finish() // Finish MainActivity to prevent going back to it on back press
         }
-
 
         binding.signInButton.setOnClickListener {
             val username = binding.usernameView.text.toString()
@@ -47,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //Calling LoginRepo Method For Fetching Data..
-    //Based On rollName We are Navigating..
+    // Calling LoginRepo Method For Fetching Data..
+    // Based on roleName, we are navigating..
     private fun login(username: String, password: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = loginRepository.login(username, password)
@@ -64,30 +62,15 @@ class MainActivity : AppCompatActivity() {
                     val token = dataObject.get("token").asString // Extract the token
 
                     withContext(Dispatchers.Main) {
-
-                        val sharedPreferences = getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-                        with(sharedPreferences.edit()) {
-                            putString("auth_token", token) // Save the token in SharedPreferences
-                            apply()
-                        }
+                        preferencesManager.saveAuthToken(token) // Save the token in PreferencesManager
 
                         when (roleName) {
                             "Admin" -> {
-                                // Save login state
-                                val sharedPreferences = getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-                                with(sharedPreferences.edit()) {
-                                    putBoolean("isLoggedInAsAdmin", true)
-                                    apply()
-                                }
+                                preferencesManager.setLoggedInAsAdmin(true)
                                 navigateToAdminDashboard()
                             }
                             "Parent" -> {
-                                // Save login state
-                                val sharedPreferences = getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-                                with(sharedPreferences.edit()) {
-                                    putBoolean("isLoggedInAsParent", true)
-                                    apply()
-                                }
+                                preferencesManager.setLoggedInAsParent(true)
                                 navigateToParentDashBoard()
                             }
                             else -> {
@@ -103,7 +86,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun navigateToAdminDashboard() {
         val intent = Intent(this, AdminPage::class.java)

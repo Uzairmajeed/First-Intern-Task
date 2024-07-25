@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
+import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
 import com.facebook.firsttask.admin.dashboard.PTMCreation.nextpage.Location
 import com.facebook.firsttask.admin.dashboard.PTMCreation.nextpage.NetworkOperations
@@ -30,6 +31,8 @@ class EditLocationDialogFragment : DialogFragment() {
 
     private var locations: List<Location> = emptyList()
     private lateinit var locationSpinner: Spinner
+    private lateinit var preferencesManager: PreferencesManager
+
 
     companion object {
         private const val ARG_TEACHER_NAME = "teacher_name"
@@ -53,9 +56,8 @@ class EditLocationDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences =
-            requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-        val authToken = sharedPreferences.getString("auth_token", null)
+        preferencesManager = PreferencesManager(requireContext())
+        val authToken = preferencesManager.getAuthToken()
         networkForPtmManagement = authToken?.let { NetworkForPtmManagement(it, requireContext()) }!!
 
         teacherName = arguments?.getString(ARG_TEACHER_NAME) ?: ""
@@ -115,9 +117,7 @@ class EditLocationDialogFragment : DialogFragment() {
     }
 
     private fun fetchLocations() {
-        val sharedPreferences = requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-        val authToken = sharedPreferences.getString("auth_token", null)
-
+        val authToken = preferencesManager.getAuthToken()
         val getAllLocations = authToken?.let { NetworkOperations(it, requireContext()) }
         lifecycleScope.launch {
             try {

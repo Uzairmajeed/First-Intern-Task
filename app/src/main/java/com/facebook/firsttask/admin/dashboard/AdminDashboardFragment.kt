@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.facebook.firsttask.MainActivity
+import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
 import com.facebook.firsttask.admin.AdminPage
 import com.facebook.firsttask.admin.dashboard.PTMCreation.PtmCreationFragment
@@ -28,6 +29,8 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
 
     private lateinit var monthYearTextView: TextView
     private lateinit var customCalendarView: CustomCalendarView // Add this
+    private lateinit var preferencesManager: PreferencesManager
+
 
 
 
@@ -87,9 +90,10 @@ class AdminDashboardFragment : Fragment(), CustomCalendarView.MonthChangeListene
             customCalendarView.showNextMonth()
         }
 
+        preferencesManager = PreferencesManager(requireContext())
 
-        val sharedPreferences = requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-        val authToken = sharedPreferences.getString("auth_token", null)
+
+        val authToken = preferencesManager.getAuthToken()
 
         // Fetch PTM dates from the server
         lifecycleScope.launch {

@@ -14,6 +14,7 @@ import android.widget.CheckBox
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
 import com.facebook.firsttask.admin.dashboard.PTMCreation.nextpage.OnclickPtmCreation
 import com.facebook.firsttask.databinding.FragmentPtmCreationBinding
@@ -35,6 +36,7 @@ class PtmCreationFragment : Fragment() {
 
     private var checkBoxList = mutableListOf<CheckBox>()
     private var wingMap = mutableMapOf<String, String>() // Map to store wing names and IDs
+    private lateinit var preferencesManager: PreferencesManager
 
 
     override fun onCreateView(
@@ -248,8 +250,8 @@ class PtmCreationFragment : Fragment() {
 
     private  fun getAllWings(){
 
-        val sharedPreferences = requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-        val authToken = sharedPreferences.getString("auth_token", null)
+        preferencesManager =PreferencesManager(requireContext())
+        val authToken = preferencesManager.getAuthToken()
         val schoolWings = authToken?.let { it1 -> GetAllSchoolWings(it1) }
         lifecycleScope.launch {
             val response = schoolWings?.getFromServer()

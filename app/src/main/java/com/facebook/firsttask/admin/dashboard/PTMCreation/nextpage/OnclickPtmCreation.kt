@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
 import com.facebook.firsttask.admin.dashboard.AdminDashboardFragment
 import com.facebook.firsttask.admin.dashboard.PTMCreation.TimeSelection
@@ -29,6 +30,8 @@ class OnclickPtmCreation : Fragment() {
     private  var classList = mutableListOf<ClassData>()
     private var teacherList = mutableListOf<TeacherData>()
     private var locations: List<Location> = emptyList()
+    private lateinit var preferencesManager: PreferencesManager
+
 
 
 
@@ -43,8 +46,8 @@ class OnclickPtmCreation : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreferences = requireContext().getSharedPreferences("login_pref", Context.MODE_PRIVATE)
-        val authToken = sharedPreferences.getString("auth_token", null)
+        preferencesManager = PreferencesManager(requireContext())
+        val authToken = preferencesManager.getAuthToken()
 
         // Retrieve selected wing names from arguments
         val selectedWingNames = arguments?.getStringArrayList("selectedWingNames")
