@@ -14,8 +14,10 @@ class TeacherAttributeAdapter(
     private val teacherAttributes: List<TeacherAttribute>,
     private val ptmId: String, // Add ptmId parameter
     private val fragmentManager: FragmentManager,
+    private val onLocationUpdatedListener: OnLocationUpdatedListener // Add this parameter
 
-    ) : RecyclerView.Adapter<TeacherAttributeAdapter.TeacherAttributeViewHolder>() {
+
+) : RecyclerView.Adapter<TeacherAttributeAdapter.TeacherAttributeViewHolder>() {
 
     class TeacherAttributeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val teacherName: TextView = itemView.findViewById(R.id.teacherName)
@@ -43,7 +45,9 @@ class TeacherAttributeAdapter(
 
         holder.editLocationButton.setOnClickListener {
             val dialogFragment = EditLocationDialogFragment.newInstance(teacherAttribute.teacherName,teacherAttribute.teacherAttId, ptmId)
+            dialogFragment.setOnLocationUpdatedListener(onLocationUpdatedListener)
             dialogFragment.show(fragmentManager, "EditLocationDialog")
+
         }
     }
 

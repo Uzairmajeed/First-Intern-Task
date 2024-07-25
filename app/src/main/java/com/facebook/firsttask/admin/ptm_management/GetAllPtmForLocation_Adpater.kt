@@ -13,7 +13,9 @@ import com.facebook.firsttask.R
 
 class GetAllPtmForLocation_Adpater(
     private val ptmList: List<PtmData>,
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
+    private val onLocationUpdatedListener: OnLocationUpdatedListener // Add this parameter
+
 
 ) : RecyclerView.Adapter<GetAllPtmForLocation_Adpater.PtmViewHolder>() {
 
@@ -47,6 +49,8 @@ class GetAllPtmForLocation_Adpater(
 
         holder.itemDropdownButton.setOnClickListener {
             val dialogFragment = TeacherAttributeDialogFragment.newInstance(ptmItem.teacherAttributes,ptmItem.ptmId)
+            dialogFragment.setOnLocationUpdatedListener(onLocationUpdatedListener)
+
             dialogFragment.show(fragmentManager, "TeacherAttributeDialogFragment")
         }
     }

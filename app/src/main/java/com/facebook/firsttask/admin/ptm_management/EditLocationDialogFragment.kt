@@ -33,6 +33,8 @@ class EditLocationDialogFragment : DialogFragment() {
     private lateinit var locationSpinner: Spinner
     private lateinit var preferencesManager: PreferencesManager
 
+    private var onLocationUpdatedListener: OnLocationUpdatedListener? = null
+
 
     companion object {
         private const val ARG_TEACHER_NAME = "teacher_name"
@@ -72,6 +74,10 @@ class EditLocationDialogFragment : DialogFragment() {
         fetchLocations()
     }
 
+    fun setOnLocationUpdatedListener(listener: OnLocationUpdatedListener) {
+        onLocationUpdatedListener = listener
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,6 +112,7 @@ class EditLocationDialogFragment : DialogFragment() {
                             location.locationId,
                             ptmId.toInt()
                         )
+                        onLocationUpdatedListener?.onLocationUpdated()
                         dismiss()
                     } catch (e: Exception) {
                         Log.e("UpdateLocationError", "Error updating location", e)

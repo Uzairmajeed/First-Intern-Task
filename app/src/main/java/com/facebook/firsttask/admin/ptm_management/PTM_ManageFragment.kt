@@ -18,13 +18,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PTM_ManageFragment : Fragment() {
+class PTM_ManageFragment : Fragment(), OnLocationUpdatedListener{
 
     private lateinit var networkForPtmManagement: NetworkForPtmManagement
     private var _binding: FragmentPTMManageBinding? = null
     private val binding get() = _binding!!
     private lateinit var ptmAdapter: GetAllPtmForLocation_Adpater
     private lateinit var preferencesManager: PreferencesManager
+
+    override fun onLocationUpdated() {
+        // Reload the data
+        loadData()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +62,7 @@ class PTM_ManageFragment : Fragment() {
                 val response = networkForPtmManagement.getAllPtmDatesForLocation()
                 response?.data?.let { ptmDataList ->
                     withContext(Dispatchers.Main) {
-                        ptmAdapter = GetAllPtmForLocation_Adpater(ptmDataList,childFragmentManager)
+                        ptmAdapter = GetAllPtmForLocation_Adpater(ptmDataList,childFragmentManager,this@PTM_ManageFragment)
                         binding.getallotmdatesforlocation.adapter = ptmAdapter
                     }
                 } ?: run {

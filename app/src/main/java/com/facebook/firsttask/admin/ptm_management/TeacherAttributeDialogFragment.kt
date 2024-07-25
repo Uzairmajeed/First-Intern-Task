@@ -9,16 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.R
 
-class TeacherAttributeDialogFragment : DialogFragment() {
+class TeacherAttributeDialogFragment : DialogFragment(), OnLocationUpdatedListener {
 
     private lateinit var teacherAttributes: List<TeacherAttribute>
     private lateinit var ptmId: String
 
+    private var onLocationUpdatedListener: OnLocationUpdatedListener? = null
 
     companion object {
         private const val ARG_TEACHER_ATTRIBUTES = "teacher_attributes"
         private const val ARG_PTM_ID = "ptm_id"
-
 
         fun newInstance(teacherAttributes: List<TeacherAttribute>, ptmId: Int): TeacherAttributeDialogFragment {
             val fragment = TeacherAttributeDialogFragment()
@@ -35,7 +35,16 @@ class TeacherAttributeDialogFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
         teacherAttributes = arguments?.getParcelableArrayList(ARG_TEACHER_ATTRIBUTES) ?: emptyList()
         ptmId = arguments?.getString(ARG_PTM_ID) ?: ""
+    }
 
+    fun setOnLocationUpdatedListener(listener: OnLocationUpdatedListener) {
+        onLocationUpdatedListener = listener
+    }
+
+    override fun onLocationUpdated() {
+        // Reload the data if necessary
+        onLocationUpdatedListener?.onLocationUpdated()
+        dismiss()
     }
 
     override fun onCreateView(
@@ -49,6 +58,6 @@ class TeacherAttributeDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewTeacherAttributes)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = TeacherAttributeAdapter(teacherAttributes,ptmId,childFragmentManager)
+        recyclerView.adapter = TeacherAttributeAdapter(teacherAttributes, ptmId, childFragmentManager, this@TeacherAttributeDialogFragment)
     }
 }
