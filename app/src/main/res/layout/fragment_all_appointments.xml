@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".admin.appointments.AllAppointmentsFragment">
 
     <HorizontalScrollView
         android:id="@+id/horizontalView1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/linearlayout">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TableLayout
             android:id="@+id/tableLayout1"
@@ -110,15 +107,11 @@
 
 
     <LinearLayout
-        android:id="@+id/linearlayout"
+        android:id="@+id/linearlayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/horizontalView1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/horizontalView2">
+        android:gravity="center">
 
         <Button
             android:id="@+id/buttonReset"
@@ -139,127 +132,130 @@
     </LinearLayout>
 
 
-    <!-- RecyclerView and Data Rows -->
-    <HorizontalScrollView
-        android:id="@+id/horizontalView2"
+    <LinearLayout
+        android:id="@+id/linearlayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/linearlayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <!-- RecyclerView and Data Rows -->
+        <HorizontalScrollView
+            android:id="@+id/horizontalView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TableLayout
-                android:id="@+id/tabLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:padding="10dp"
-                android:background="#F1EEEE">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TableRow
+                <TableLayout
+                    android:id="@+id/tabLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:background="#F1EEEE">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp">
+
+                        <!-- Header TextViews -->
+                        <TextView
+                            android:id="@+id/dateTextView"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:text="Date"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/meetingTextView"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:text="MeetingTime"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/childnameTextView"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:text="Child Name"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/classNameTextView"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:text="Class Name"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/wingnameTextView"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:text="Wing Name"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/teacherTextView"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:text="Teacher Name"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/statusTextView"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:paddingStart="50dp"
+                            android:text="Status"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:textAppearanceMedium" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reclerviewofallappointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp">
+                    android:nestedScrollingEnabled="true"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"/>
 
-                    <!-- Header TextViews -->
-                    <TextView
-                        android:id="@+id/dateTextView"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:text="Date"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:textAppearanceMedium" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/meetingTextView"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:text="MeetingTime"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:textAppearanceMedium" />
+        </HorizontalScrollView>
 
-                    <TextView
-                        android:id="@+id/childnameTextView"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:text="Child Name"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/classNameTextView"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:text="Class Name"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/wingnameTextView"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:text="Wing Name"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/teacherTextView"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:text="Teacher Name"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/statusTextView"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:paddingStart="50dp"
-                        android:text="Status"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:textAppearanceMedium" />
-                </TableRow>
-
-            </TableLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/reclerviewofallappointments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
+    </LinearLayout>
 
 
-
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
