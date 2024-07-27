@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="1"> <!-- Stretch the columns to evenly distribute space -->
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/meetingtimetextView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="MeetingTime"
+            android:layout_marginStart="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/childnameTextview"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Childname"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/classNametextview"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ClassName"
+            android:layout_marginStart="50dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/wingNametextview"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="wingName"
+            android:layout_marginStart="50dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/teacherNametextview"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="teachername"
+            android:layout_marginStart="50dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Status"
+            android:layout_marginStart="50dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+
+    </TableRow>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#31CCAEAE" />
+</TableLayout>

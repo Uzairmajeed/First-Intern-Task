@@ -49,4 +49,11 @@ dependencies {
     implementation "io.ktor:ktor-client-android:1.6.4"
     //For Json Parsing
     implementation 'com.google.code.gson:gson:2.8.9'
+
+    // Material Components for TabLayout
+    implementation 'com.google.android.material:material:1.8.0'
+
+    // ViewPager2
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
 }

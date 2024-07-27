@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.facebook.firsttask.MainActivity
 import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
+import com.facebook.firsttask.admin.appointments.Appointments_Fragment
 import com.facebook.firsttask.admin.dashboard.AdminDashboardFragment
 import com.facebook.firsttask.admin.ptm_management.PTM_ManageFragment
 import com.facebook.firsttask.databinding.ActivityAdminPageBinding
@@ -49,10 +50,12 @@ class AdminPage : AppCompatActivity() {
                 R.id.nav_ptm_management -> {
                     // Handle Payment Management click
                     updateToolbarText("PTM Management")
-                    replaceFragment(PTM_ManageFragment(),R.id.nav_dashboard)
+                    replaceFragment(PTM_ManageFragment(),R.id.nav_ptm_management)
                 }
                 R.id.nav_appointments -> {
-                    // Handle Appointments click
+                    // Handle Payment Management click
+                    updateToolbarText("Manage Appointments")
+                    replaceFragment(Appointments_Fragment(),R.id.nav_appointments)
                 }
                 R.id.nav_user_management -> {
                     // Handle User Management click
