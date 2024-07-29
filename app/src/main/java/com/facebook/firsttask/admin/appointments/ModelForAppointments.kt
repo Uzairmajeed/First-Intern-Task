@@ -24,3 +24,30 @@ data class AppointmentData(
     val wingName: String,
     val childId: Int
 )
+
+data class TeacherAppointmentsResponse(
+    val status: Int,
+    val data: List<TeacherAppointmentData>,
+    val success: Boolean,
+    val isValidationError: Boolean,
+    val totalCount: Int
+)
+
+data class TeacherAppointmentData(
+    val ptmDate: String,
+    val teacherName: String,
+    val totalAppts: Int,
+    val ptmId: Int,
+    val teacherId: Int,
+    val timeslots: List<TimeslotData>
+)
+
+data class TimeslotData(
+    val timeslotId: Int,
+    val startTime: String,
+    val endTime: String,
+    val ptmDate: String,
+    val childName: String,
+    val className: String,
+    val location: String? // Location is optional
+)

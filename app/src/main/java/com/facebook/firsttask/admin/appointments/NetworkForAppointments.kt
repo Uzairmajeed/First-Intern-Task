@@ -79,5 +79,24 @@ class NetworkForAppointments (private val authToken: String,private val context:
             emptyList()
         }
     }
-}
 
+    suspend fun getAllAppointmentsWithTeacherDetails(): List<TeacherAppointmentData> {
+        val url = "http://68.178.165.107:91/api/Appointment/GetAppointmentsWithTeacherDetails"
+
+        val response: HttpResponse = client.get(url) {
+            header("Authorization", "Bearer $authToken")
+        }
+        val responseBody = response.receive<String>()
+
+        Log.d("TeacherAppointmentsResponse", responseBody)
+
+        return try {
+            val teacherAppointmentsResponse = gson.fromJson(responseBody, TeacherAppointmentsResponse::class.java)
+            teacherAppointmentsResponse.data
+        } catch (e: Exception) {
+            Log.e("NetworkForAppointments", "Error parsing response", e)
+            emptyList()
+        }
+    }
+
+}
