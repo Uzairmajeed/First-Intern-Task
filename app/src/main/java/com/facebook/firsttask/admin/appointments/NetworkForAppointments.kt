@@ -1,6 +1,7 @@
 package com.facebook.firsttask.admin.appointments
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
@@ -39,5 +40,44 @@ class NetworkForAppointments (private val authToken: String,private val context:
         }
     }
 
+
+    suspend fun getAllAppointmentsByParameters(status: String?, date: String?, childName: String?): List<AppointmentData> {
+        // Build the URL with only non-null parameters
+        val url = buildString {
+            append("http://68.178.165.107:91/api/Appointment/GetAllAppointment")
+
+            // Append query parameters if they are not null
+            val params = mutableListOf<String>()
+            status?.let { params.add("status=${Uri.encode(it)}") }
+            date?.let { params.add("date=${Uri.encode(it)}") }
+            childName?.let { params.add("childName=${Uri.encode(it)}") }
+
+            if (params.isNotEmpty()) {
+                append("?")
+                append(params.joinToString("&"))
+            }
+        }
+
+        if (url.endsWith("?")) {
+            // If URL ends with "?", it means no parameters were added
+            Log.d("FilteredAppointmentsResponse", "No parameters provided")
+            return emptyList() // Handle case where no parameters are provided
+        }
+
+        val response: HttpResponse = client.get(url) {
+            header("Authorization", "Bearer $authToken")
+        }
+        val responseBody = response.receive<String>()
+
+        Log.d("FilteredAppointmentsResponse", responseBody)
+
+        return try {
+            val appointmentResponse = gson.fromJson(responseBody, AppointmentsResponse::class.java)
+            appointmentResponse.data
+        } catch (e: Exception) {
+            Log.e("NetworkForAppointments", "Error parsing response", e)
+            emptyList()
+        }
+    }
 }
 

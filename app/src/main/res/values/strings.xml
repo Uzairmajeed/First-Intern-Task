@@ -18,6 +18,7 @@
     </string-array>
 
     <string-array name="status_options">
+        <item>Select Status</item> <!-- Default unselected state -->
         <item>Upcoming</item>
         <item>Concluded</item>
         <item>Missed</item>
