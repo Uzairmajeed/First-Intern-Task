@@ -86,6 +86,7 @@ class AllAppointmentsFragment : Fragment() {
         // Check if all parameters are null or empty
         if (status.isNullOrEmpty() && date.isNullOrEmpty() && childName.isEmpty()) {
             Toast.makeText(requireContext(), "Give data for searching", Toast.LENGTH_SHORT).show()
+            Log.d("AllAppointmentsFragment", "No search data provided.")
             return
         }
 
@@ -96,14 +97,25 @@ class AllAppointmentsFragment : Fragment() {
                     date,
                     childName
                 )
+
+                Log.d("AllAppointmentsFragment", "Appointments received: ${appointments.size}")
+
+                if (appointments.isEmpty()) {
+                    Toast.makeText(requireContext(), "No matching data found", Toast.LENGTH_SHORT).show()
+                    Log.d("AllAppointmentsFragment", "No matching data found.")
+                }
+
                 val adapter = AppointmentAdapter(appointments)
                 binding.reclerviewofallappointments.layoutManager = LinearLayoutManager(requireContext())
                 binding.reclerviewofallappointments.adapter = adapter
             } catch (e: Exception) {
                 Log.e("AllAppointmentsFragment", "Failed to apply filters: ${e.message}", e)
+                Toast.makeText(requireContext(), "No Match Found", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+
 
     private fun resetFilters() {
         binding.spinnerSelectStatus.setSelection(0) // Reset status spinner to default
