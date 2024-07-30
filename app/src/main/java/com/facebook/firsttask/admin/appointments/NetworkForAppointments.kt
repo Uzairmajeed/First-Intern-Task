@@ -99,4 +99,42 @@ class NetworkForAppointments (private val authToken: String,private val context:
         }
     }
 
+    suspend fun getAllAppointmentsWithTeacherDetailsWithParameters( date: String?, teacherName: String?):List<TeacherAppointmentData>{
+
+        // Build the URL with only non-null parameters
+        val url = buildString {
+            append("http://68.178.165.107:91/api/Appointment/GetAppointmentsWithTeacherDetails")
+
+            // Append query parameters if they are not null
+            val params = mutableListOf<String>()
+            date?.let { params.add("date=${Uri.encode(it)}") }
+            teacherName?.let { params.add("teacherName=${Uri.encode(it)}") }
+
+            if (params.isNotEmpty()) {
+                append("?")
+                append(params.joinToString("&"))
+            }
+        }
+
+        if (url.endsWith("?")) {
+            // If URL ends with "?", it means no parameters were added
+            Log.d("AllTeacherDetails", "No parameters provided")
+            return emptyList() // Handle case where no parameters are provided
+        }
+
+        val response: HttpResponse = client.get(url) {
+            header("Authorization", "Bearer $authToken")
+        }
+        val responseBody = response.receive<String>()
+
+        Log.d("AllTeacherDetails", responseBody)
+
+        return try {
+            val teacherAppointmentsResponse = gson.fromJson(responseBody, TeacherAppointmentsResponse::class.java)
+            teacherAppointmentsResponse.data
+        } catch (e: Exception) {
+            Log.e("NetworkForAppointmentsOfTeachers", "Error parsing response", e)
+            emptyList()
+        }
+    }
 }
