@@ -50,13 +50,15 @@ class NetworkForAppointments (private val authToken: String,private val context:
             val params = mutableListOf<String>()
             status?.let { params.add("status=${Uri.encode(it)}") }
             date?.let { params.add("date=${Uri.encode(it)}") }
-            childName?.let { params.add("childName=${Uri.encode(it)}") }
+            childName?.let { params.add("childName=${Uri.encode(it.trim())}") }
 
             if (params.isNotEmpty()) {
                 append("?")
                 append(params.joinToString("&"))
             }
         }
+        Log.d("RequestURL", "Request URL: $url")
+
 
         if (url.endsWith("?")) {
             // If URL ends with "?", it means no parameters were added
@@ -108,7 +110,7 @@ class NetworkForAppointments (private val authToken: String,private val context:
             // Append query parameters if they are not null
             val params = mutableListOf<String>()
             date?.let { params.add("date=${Uri.encode(it)}") }
-            teacherName?.let { params.add("teacherName=${Uri.encode(it)}") }
+            teacherName?.let { params.add("teacherName=${Uri.encode(it.trim())}") }
 
             if (params.isNotEmpty()) {
                 append("?")

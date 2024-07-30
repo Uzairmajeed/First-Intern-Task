@@ -129,7 +129,7 @@
                 android:orientation="vertical">
 
                 <TableLayout
-                    android:id="@+id/tabLayout2"
+                    android:id="@+id/tabLayoutforteacher"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:padding="10dp"
