@@ -74,7 +74,7 @@ class TeacherFragment : Fragment() {
                 val appointments = networkForAppointments.getAllAppointmentsWithTeacherDetails()
 
                 // Initialize and set the adapter
-                adapter = TeacherAdapter(appointments)
+                adapter = TeacherAdapter(appointments,requireContext(),childFragmentManager)
                 recyclerView.adapter = adapter
 
 
@@ -133,7 +133,7 @@ class TeacherFragment : Fragment() {
                 }
 
 
-                val adapter = TeacherAdapter(appointments)
+                val adapter = TeacherAdapter(appointments,requireContext(),childFragmentManager)
                 binding.reclerviewofallAppointmentsWithteacherDetails.layoutManager = LinearLayoutManager(requireContext())
                 binding.reclerviewofallAppointmentsWithteacherDetails.adapter = adapter
 

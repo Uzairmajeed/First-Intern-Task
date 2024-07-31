@@ -84,11 +84,11 @@ class AllAppointmentsFragment : Fragment() {
         val childName = binding.searchEditText.text.toString()
 
         // Check if all parameters are null or empty
-       /* if (status.isNullOrEmpty() && date.isNullOrEmpty() && childName.isEmpty()) {
+        if (status.isNullOrEmpty() && date.isNullOrEmpty() && childName.isEmpty()) {
             Toast.makeText(requireContext(), "Give data for searching", Toast.LENGTH_SHORT).show()
             Log.d("AllAppointmentsFragment", "No search data provided.")
             return
-        }*/
+        }
 
         lifecycleScope.launch {
             try {

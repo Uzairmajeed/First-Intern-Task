@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/swapTeacher"
+        android:title="Swap Teacher"
+        android:icon="@drawable/baseline_swap_horiz_24" />
+    <item
+        android:id="@+id/viewAll"
+        android:title="View All Appointments"
+        android:icon="@drawable/baseline_remove_red_eye_24" />
+</menu>
