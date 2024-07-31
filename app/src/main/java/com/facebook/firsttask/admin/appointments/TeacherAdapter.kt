@@ -20,7 +20,7 @@ class TeacherAdapter(private val appointments: List<TeacherAppointmentData>,priv
 
 
     private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-    private val outputDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    private val outputDateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
 
     inner class TeacherViewHolder(val binding: ItemGetallappWithteacheratrributesBinding) : RecyclerView.ViewHolder(binding.root) {
         // You can access views directly via binding

@@ -12,6 +12,7 @@ import com.facebook.firsttask.MainActivity
 import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
 import com.facebook.firsttask.admin.appointments.Appointments_Fragment
+import com.facebook.firsttask.admin.class_management.Class_Management
 import com.facebook.firsttask.admin.dashboard.AdminDashboardFragment
 import com.facebook.firsttask.admin.ptm_management.PTM_ManageFragment
 import com.facebook.firsttask.databinding.ActivityAdminPageBinding
@@ -62,6 +63,8 @@ class AdminPage : AppCompatActivity() {
                 }
                 R.id.nav_class_management -> {
                     // Handle Class Management click
+                    updateToolbarText("Class Management")
+                    replaceFragment(Class_Management(),R.id.nav_class_management)
                 }
                 R.id.nav_subject_management -> {
                     // Handle Subject Management click

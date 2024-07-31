@@ -13,7 +13,7 @@ class AppointmentAdapter(private val appointments: List<AppointmentData>) :
     RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder>() {
 
     private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-    private val outputDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    private val outputDateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
         val binding = ItemGetallappointmentsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,7 +32,7 @@ class AppointmentAdapter(private val appointments: List<AppointmentData>) :
     inner class AppointmentViewHolder(private val binding: ItemGetallappointmentsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(appointment: AppointmentData) {
             binding.dateTextView.text = formatDate(appointment.ptmDate)
-            binding.meetingtimetextView.text = "${appointment.startTime} ${appointment.endTime}"
+            binding.meetingtimetextView.text = "${appointment.startTime}     ${appointment.endTime}"
             binding.childnameTextview.text = appointment.childName
             binding.classNametextview.text = appointment.className
             binding.wingNametextview.text = appointment.wingName
