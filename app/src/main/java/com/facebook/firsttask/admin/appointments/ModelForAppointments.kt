@@ -51,3 +51,18 @@ data class TimeslotData(
     val className: String,
     val location: String? // Location is optional
 )
+
+data class TeachersSwapResponse(
+    val status: Int,
+    val data: List<TeacherDataForSwap>,
+    val success: Boolean,
+    val isValidationError: Boolean,
+    val messages: List<String>,
+    val totalCount: Int
+)
+
+data class TeacherDataForSwap(
+    val teacherId: Int,
+    val teacherName: String
+)
+

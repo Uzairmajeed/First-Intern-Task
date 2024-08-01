@@ -3,13 +3,20 @@ package com.facebook.firsttask.admin.appointments
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
 import io.ktor.client.engine.android.Android
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class NetworkForAppointments (private val authToken: String,private val context: Context) {
 
@@ -139,4 +146,63 @@ class NetworkForAppointments (private val authToken: String,private val context:
             emptyList()
         }
     }
+
+
+    suspend fun getAllTeachersForSwap(ptmid: Int, teacherId: Int): List<TeacherDataForSwap> {
+        val url = "http://68.178.165.107:91/api/Teacher/GetAllTeachersForSwap?TeacherId=$teacherId&ptmId=$ptmid"
+
+        val response: HttpResponse = client.get(url) {
+            header("Authorization", "Bearer $authToken")
+        }
+        val responseBody = response.receive<String>()
+        Log.d("TeachersForSwapResponse", responseBody)
+
+        return try {
+            val teachersSwapResponse = gson.fromJson(responseBody, TeachersSwapResponse::class.java)
+            teachersSwapResponse.data // Return the list of TeacherDataForSwap
+        } catch (e: Exception) {
+            Log.e("NetworkForAppointments", "Error parsing response", e)
+            emptyList() // Return an empty list if parsing fails
+        }
+    }
+
+
+    suspend fun swapTeacher(oldTeacherId: Int, newTeacherId: Int, ptmId: Int) {
+        val swapRequest = mapOf(
+            "oldTeacherId" to oldTeacherId,
+            "newTeacherId" to newTeacherId,
+            "ptmId" to ptmId
+        )
+
+        try {
+            val gson = Gson()
+            val jsonBody = gson.toJson(swapRequest)
+
+            val response: HttpResponse = withContext(Dispatchers.IO) {
+                client.post("http://68.178.165.107:91/api/Appointment/SwapTeacher") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer $authToken")
+                    body = jsonBody
+                }
+            }
+
+            if (response.status == HttpStatusCode.OK) {
+                val responseBody = response.receive<String>()
+                Log.d("SwapTeacherResponse", responseBody)
+                showToast("Successfully swapped teacher")
+            } else {
+                val responseBody = response.receive<String>()
+                Log.e("SwapTeacherError", "Failed to swap teacher: ${response.status}")
+                Log.e("SwapTeacherError", responseBody)
+                showToast("Failed to swap teacher: ${response.status.value}")
+            }
+        } catch (e: Exception) {
+            Log.e("SwapTeacherException", "Exception while swapping teacher", e)
+            showToast("Error swapping teacher: ${e.message}")
+        }
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
 }

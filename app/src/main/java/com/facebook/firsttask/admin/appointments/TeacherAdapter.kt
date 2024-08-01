@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +14,11 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TeacherAdapter(private val appointments: List<TeacherAppointmentData>,private  val context: Context,
-    private val fragmentManager: FragmentManager) : RecyclerView.Adapter<TeacherAdapter.TeacherViewHolder>() {
+class TeacherAdapter(private val appointments: List<TeacherAppointmentData>,
+                     private  val context: Context,
+                     private val fragmentManager: FragmentManager,
+                     private val listener: OnTeacherSwappedListener // Callback listener
+) : RecyclerView.Adapter<TeacherAdapter.TeacherViewHolder>() {
 
 
     private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
@@ -74,7 +76,7 @@ class TeacherAdapter(private val appointments: List<TeacherAppointmentData>,priv
             val ptmid = appointment.ptmId
             val teacherId = appointment.teacherId
 
-            val dialogFragment = SwapTeacherDialogFragment.newInstance(ptmid, teacherId)
+            val dialogFragment = SwapTeacherDialogFragment.newInstance(ptmid, teacherId,listener)
             dialogFragment.show(fragmentManager, "SwapTeacherDialog")
 
     }
@@ -107,6 +109,8 @@ class TeacherAdapter(private val appointments: List<TeacherAppointmentData>,priv
             dateString
         }
     }
+
+
 
     override fun getItemCount(): Int {
         return appointments.size

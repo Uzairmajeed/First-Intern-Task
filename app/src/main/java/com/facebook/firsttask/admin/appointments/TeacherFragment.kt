@@ -20,7 +20,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class TeacherFragment : Fragment() {
+class TeacherFragment : Fragment(), OnTeacherSwappedListener {
 
     private lateinit var networkForAppointments: NetworkForAppointments
     private lateinit var preferencesManager: PreferencesManager
@@ -74,7 +74,7 @@ class TeacherFragment : Fragment() {
                 val appointments = networkForAppointments.getAllAppointmentsWithTeacherDetails()
 
                 // Initialize and set the adapter
-                adapter = TeacherAdapter(appointments,requireContext(),childFragmentManager)
+                adapter = TeacherAdapter(appointments,requireContext(),childFragmentManager,this@TeacherFragment)
                 recyclerView.adapter = adapter
 
 
@@ -133,7 +133,7 @@ class TeacherFragment : Fragment() {
                 }
 
 
-                val adapter = TeacherAdapter(appointments,requireContext(),childFragmentManager)
+                val adapter = TeacherAdapter(appointments,requireContext(),childFragmentManager,this@TeacherFragment)
                 binding.reclerviewofallAppointmentsWithteacherDetails.layoutManager = LinearLayoutManager(requireContext())
                 binding.reclerviewofallAppointmentsWithteacherDetails.adapter = adapter
 
@@ -171,4 +171,8 @@ class TeacherFragment : Fragment() {
      super.onDestroyView()
      _binding = null
    }
+
+    override fun onTeacherSwapped() {
+        fetchData() // Refresh the data when a teacher swap occurs
+    }
 }
