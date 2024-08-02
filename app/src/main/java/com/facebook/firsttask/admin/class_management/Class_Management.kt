@@ -84,8 +84,8 @@ class Class_Management : Fragment(),OnUpdatedCLassNameListner {
                                     Log.d("ClassesResponse", "Classes for $wingName: $classes")
 
                                     if (classes.isNullOrEmpty()) {
-                                        // Show a toast message if there are no classes for the selected wing
-                                        Toast.makeText(requireContext(), "No data available for $wingName", Toast.LENGTH_SHORT).show()
+                                        classAdapter = ClassAdapterForClassManage(emptyList(),childFragmentManager,this@Class_Management)
+                                        recyclerView.adapter = classAdapter
                                     } else {
                                         // Update the RecyclerView with the new data
                                         classAdapter = ClassAdapterForClassManage(classes,childFragmentManager,this@Class_Management)
