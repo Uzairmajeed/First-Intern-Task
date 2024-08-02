@@ -9,14 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.R
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
-class Class_Management : Fragment() {
+class Class_Management : Fragment(),OnUpdatedCLassNameListner {
 
     private lateinit var networkForClassManage: NetworkForClassManagement
     private lateinit var preferencesManager: PreferencesManager
@@ -89,7 +88,7 @@ class Class_Management : Fragment() {
                                         Toast.makeText(requireContext(), "No data available for $wingName", Toast.LENGTH_SHORT).show()
                                     } else {
                                         // Update the RecyclerView with the new data
-                                        classAdapter = ClassAdapterForClassManage(classes)
+                                        classAdapter = ClassAdapterForClassManage(classes,childFragmentManager,this@Class_Management)
                                         recyclerView.adapter = classAdapter
                                     }
                                 }
@@ -107,7 +106,7 @@ class Class_Management : Fragment() {
 
                     // Set initial tab selection
                     if (wings.isNotEmpty()) {
-                        tabLayout.getTabAt(0)?.select()
+                        tabLayout.getTabAt(5)?.select()
                     }
 
                 }
@@ -116,6 +115,10 @@ class Class_Management : Fragment() {
                 Log.e("WingsDataError", "Error loading wings data", e)
             }
         }
+    }
+
+    override fun onUpdatedClass() {
+        loadWingsData()
     }
 
 }

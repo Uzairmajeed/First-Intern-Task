@@ -2,10 +2,15 @@ package com.facebook.firsttask.admin.class_management
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.databinding.ItemGetclassesformanagementBinding
 
-class ClassAdapterForClassManage(private val classList: List<ClassData>) :
+class ClassAdapterForClassManage(
+    private val classList: List<ClassData>,
+    private val fragmentManager: FragmentManager,
+    private val listner: OnUpdatedCLassNameListner
+) :
     RecyclerView.Adapter<ClassAdapterForClassManage.ClassViewHolder>() {
 
     class ClassViewHolder(val binding: ItemGetclassesformanagementBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -24,7 +29,13 @@ class ClassAdapterForClassManage(private val classList: List<ClassData>) :
 
 
         holder.editButton.setOnClickListener {
-          // Do something..
+            val dialogFragment = EditClassDialogFragment.newInstance(
+                classData.className,
+                classData.sectionName,
+                classData.classId,
+                listner
+            )
+            dialogFragment.show(fragmentManager, "EditClassDialog")
         }
     }
 

@@ -3,13 +3,20 @@ package com.facebook.firsttask.admin.class_management
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
 import io.ktor.client.engine.android.Android
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class NetworkForClassManagement(private val authToken: String, private val context: Context) {
     private val client = HttpClient(Android) {
@@ -61,5 +68,43 @@ class NetworkForClassManagement(private val authToken: String, private val conte
             Log.e("NetworkForClassManagement", "Error fetching classes for wing", e)
             emptyList() // Return an empty list if an error occurs
         }
+    }
+
+    suspend fun updateClassName(Id: Int, className: String, sectionName: String) {
+        val updateRequest = mapOf(
+            "id" to Id,
+            "className" to className,
+            "sectionName" to sectionName
+        )
+
+        try {
+            val gson = Gson()
+            val jsonBody = gson.toJson(updateRequest)
+
+            val response: HttpResponse = withContext(Dispatchers.IO) {
+                client.post("http://68.178.165.107:91/api/Location/UpdateClass") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer $authToken")
+                    body = jsonBody
+                }
+            }
+
+            if (response.status == HttpStatusCode.OK) {
+                val responseBody = response.receive<String>()
+                Log.d("UpdatedResponse", responseBody)
+                showToast("Successfully Updated ")
+            } else {
+                val responseBody = response.receive<String>()
+                Log.e("UpdatedResponse", "Failed to Update : ${response.status}")
+                Log.e("UpdatedResponse", responseBody)
+                showToast("Failed to Update : ${response.status.value}")
+            }
+        } catch (e: Exception) {
+            Log.e("UpdateException", "Exception while Updating ", e)
+            showToast("Error updating teacher: ${e.message}")
+        }
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
