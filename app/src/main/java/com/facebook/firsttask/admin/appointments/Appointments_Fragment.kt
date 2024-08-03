@@ -26,6 +26,8 @@ class Appointments_Fragment : Fragment() {
         val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
 
         viewPager.adapter = ViewPagerAdapter(requireActivity())
+        viewPager.offscreenPageLimit = 2
+
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
