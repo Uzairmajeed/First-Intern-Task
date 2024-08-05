@@ -2,10 +2,14 @@ package com.facebook.firsttask.admin.user_management
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.databinding.ItemGetallparentsBinding
 
-class GetALLParentsAdapter(private val parents: List<ParentData>) : RecyclerView.Adapter<GetALLParentsAdapter.ParentViewHolder>() {
+class GetALLParentsAdapter(
+    private val parents: List<ParentData>,
+    private val fragmentManager: FragmentManager
+) : RecyclerView.Adapter<GetALLParentsAdapter.ParentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParentViewHolder {
         val binding = ItemGetallparentsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -19,6 +23,15 @@ class GetALLParentsAdapter(private val parents: List<ParentData>) : RecyclerView
             parentView.text = "${parent.firstName}${parent.lastName}\n${parent.firstName2}${parent.lastName2}"
             emailView.text =  "${parent.email}\n${parent.email2}"
             childrenView.text = parent.childrens.size.toString()
+
+            dropdownButton.setOnClickListener {
+                val dialogFragment = ChildDataDialogFragment.newInstance(
+                    "${parent.firstName} ${parent.lastName}",
+                    parent.childrens
+                )
+                dialogFragment.show(fragmentManager, "ChildDataDialogFragment")
+            }
+
         }
     }
 

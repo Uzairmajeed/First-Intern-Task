@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.firsttask.PreferencesManager
-import com.facebook.firsttask.R
-import com.facebook.firsttask.admin.appointments.NetworkForAppointments
 import com.facebook.firsttask.databinding.FragmentParentsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +53,7 @@ class ParentsFragment : Fragment() {
             val parentData = networkForUserManagement.getAllParents() // Call your API method
 
             withContext(Dispatchers.Main) {
-                adapter = GetALLParentsAdapter(parentData)
+                adapter = GetALLParentsAdapter(parentData,childFragmentManager)
                 binding.reclerviewofallparents.adapter = adapter
             }
         }
