@@ -15,6 +15,7 @@ import com.facebook.firsttask.admin.appointments.Appointments_Fragment
 import com.facebook.firsttask.admin.class_management.Class_Management
 import com.facebook.firsttask.admin.dashboard.AdminDashboardFragment
 import com.facebook.firsttask.admin.ptm_management.PTM_ManageFragment
+import com.facebook.firsttask.admin.user_management.UserManagement
 import com.facebook.firsttask.databinding.ActivityAdminPageBinding
 
 class AdminPage : AppCompatActivity() {
@@ -60,6 +61,8 @@ class AdminPage : AppCompatActivity() {
                 }
                 R.id.nav_user_management -> {
                     // Handle User Management click
+                    updateToolbarText("User Management")
+                    replaceFragment(UserManagement(),R.id.nav_user_management)
                 }
                 R.id.nav_class_management -> {
                     // Handle Class Management click

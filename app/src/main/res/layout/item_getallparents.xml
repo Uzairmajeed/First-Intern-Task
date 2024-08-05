@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="1">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/idView"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Id"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/parentView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Parent"
+            android:layout_marginStart="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/emailView"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Email"
+            android:layout_marginStart="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/childrenView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Children"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:padding="5dp"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#EADFDF"
+            android:text="Add"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp" />
+
+
+        <ImageButton
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_edit_24"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="5dp"/>
+
+
+
+        <ImageButton
+            android:id="@+id/dropdownButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_drop_down_circle_24"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="5dp"/>
+
+    </TableRow>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#31CCAEAE" />
+</TableLayout>
