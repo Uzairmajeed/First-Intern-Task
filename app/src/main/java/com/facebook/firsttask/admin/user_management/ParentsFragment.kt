@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ParentsFragment : Fragment(),OnMakeChanges {
+class ParentsFragment : Fragment(),OnMakeChanges, FilterDialogFragment.FilterListener  {
 
     private var _binding: FragmentParentsBinding? = null
     private val binding get() = _binding!!
@@ -25,6 +25,9 @@ class ParentsFragment : Fragment(),OnMakeChanges {
     private lateinit var networkForUserManagement: NetworkForUserManagement
     private lateinit var preferencesManager: PreferencesManager
     private var parentData: List<ParentData> = emptyList()
+
+    private var filteredParentData: List<ParentData> = emptyList()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +65,13 @@ class ParentsFragment : Fragment(),OnMakeChanges {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        // Set up filter button listener
+        binding.filterButton.setOnClickListener {
+            val filterDialog = FilterDialogFragment()
+            filterDialog.setFilterListener(this)
+            filterDialog.show(childFragmentManager, "FilterDialogFragment")
+        }
     }
 
     private fun filterList(query: String) {
@@ -77,9 +87,11 @@ class ParentsFragment : Fragment(),OnMakeChanges {
     private fun fetchParents() {
         CoroutineScope(Dispatchers.IO).launch {
             parentData = networkForUserManagement.getAllParents() // Call your API method
+            filteredParentData = parentData
+
 
             withContext(Dispatchers.Main) {
-                adapter = GetALLParentsAdapter(parentData,childFragmentManager,this@ParentsFragment)
+                adapter = GetALLParentsAdapter(filteredParentData,childFragmentManager,this@ParentsFragment)
                 binding.reclerviewofallparents.adapter = adapter
             }
         }
@@ -92,6 +104,19 @@ class ParentsFragment : Fragment(),OnMakeChanges {
 
     override fun onChange() {
         fetchParents()
+    }
+
+    override fun onFilterApplied(isActive: Boolean?, isInactive: Boolean?) {
+        val filteredByStatus = if (isActive != null || isInactive != null) {
+            filteredParentData.filter { parent ->
+                parent.childrens.any { child ->
+                    (isActive == true && child.isActive) || (isInactive == true && !child.isActive)
+                }
+            }
+        } else {
+            filteredParentData
+        }
+        adapter.updateData(filteredByStatus)
     }
 
 }

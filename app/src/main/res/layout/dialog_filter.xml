@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Child Status Section -->
+    <TextView
+        android:id="@+id/childStatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Child Status"
+        android:textSize="20sp"
+        android:textColor="@android:color/black" />
+
+
+        <CheckBox
+            android:id="@+id/checkboxActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active" />
+
+        <CheckBox
+            android:id="@+id/checkboxInactive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inactive" />
+
+    <!-- Button Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#A3B0B8"
+            app:cornerRadius="10dp"
+            android:text="Clear" />
+
+        <Button
+            android:id="@+id/applyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply"
+            app:cornerRadius="10dp"
+            android:layout_marginStart="16dp" />
+    </LinearLayout>
+
+</LinearLayout>
