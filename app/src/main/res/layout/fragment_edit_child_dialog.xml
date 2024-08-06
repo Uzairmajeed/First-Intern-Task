@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Child"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingBottom="8dp"/>
+
+    <!-- Parent Name TextView -->
+    <TextView
+        android:id="@+id/parentNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Parent Name: "
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- First Name EditText -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="FirstName"/>
+
+        <!-- Last Name EditText -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LastName"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- First Name EditText -->
+        <EditText
+            android:id="@+id/firstNameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:drawable/edit_text"
+            android:hint="First Name"
+            android:inputType="text"/>
+
+        <!-- Last Name EditText -->
+        <EditText
+            android:id="@+id/lastNameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/edit_text"
+            android:layout_weight="1"
+            android:hint="Last Name"
+            android:inputType="text"/>
+
+    </LinearLayout>
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Save"
+        android:layout_margin="10dp"
+        app:cornerRadius="10dp"/>
+
+</LinearLayout>

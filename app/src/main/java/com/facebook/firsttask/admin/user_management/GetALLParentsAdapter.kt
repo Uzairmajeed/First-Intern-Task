@@ -8,7 +8,8 @@ import com.facebook.firsttask.databinding.ItemGetallparentsBinding
 
 class GetALLParentsAdapter(
     private val parents: List<ParentData>,
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
+    private val listner: OnMakeChanges
 ) : RecyclerView.Adapter<GetALLParentsAdapter.ParentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParentViewHolder {
@@ -27,7 +28,7 @@ class GetALLParentsAdapter(
             dropdownButton.setOnClickListener {
                 val dialogFragment = ChildDataDialogFragment.newInstance(
                     "${parent.firstName} ${parent.lastName}",
-                    parent.childrens
+                    parent.childrens,parent.id,listner
                 )
                 dialogFragment.show(fragmentManager, "ChildDataDialogFragment")
             }

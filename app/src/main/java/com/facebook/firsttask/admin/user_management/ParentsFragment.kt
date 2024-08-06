@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ParentsFragment : Fragment() {
+class ParentsFragment : Fragment(),OnMakeChanges {
 
     private var _binding: FragmentParentsBinding? = null
     private val binding get() = _binding!!
@@ -53,7 +53,7 @@ class ParentsFragment : Fragment() {
             val parentData = networkForUserManagement.getAllParents() // Call your API method
 
             withContext(Dispatchers.Main) {
-                adapter = GetALLParentsAdapter(parentData,childFragmentManager)
+                adapter = GetALLParentsAdapter(parentData,childFragmentManager,this@ParentsFragment)
                 binding.reclerviewofallparents.adapter = adapter
             }
         }
@@ -62,6 +62,10 @@ class ParentsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onChange() {
+        fetchParents()
     }
 
 }

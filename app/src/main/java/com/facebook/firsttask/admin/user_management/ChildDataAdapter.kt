@@ -18,8 +18,10 @@ import kotlinx.coroutines.withContext
 class ChildDataAdapter(
     private val childDataList: List<ChildData>,
     private val parentName: String?,
-    private val childFragmentManager: FragmentManager,
-    private val context: Context
+    private val parentId: Int?,
+    private val fragmentManager: FragmentManager,
+    private val context: Context,
+    private val childDataDialoglistner: OnMakeChanges
 ) : RecyclerView.Adapter<ChildDataAdapter.ChildDataViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChildDataViewHolder {
@@ -53,7 +55,21 @@ class ChildDataAdapter(
             }
 
             binding.editButton.setOnClickListener {
+                val editChildDialog = childData.firstName?.let { it1 ->
+                    childData.lastName?.let { it2 ->
+                        EditChildDialogFragment.newInstance(
+                            it1,
+                            it2,
+                            parentName ?: "",
+                            parentId ?: 0,
+                            childDataDialoglistner
 
+                        )
+                    }
+                }
+                if (editChildDialog != null) {
+                    editChildDialog.show(fragmentManager, "EditChildDialogFragment")
+                }
             }
 
         }
@@ -85,9 +101,9 @@ class ChildDataAdapter(
             val success = networkForUserManagement?.changeStatus(childId, newState) ?: false
 
             withContext(Dispatchers.Main) {
-                if (success) {
-                    // Update the status in the UI
+                if (success) { // Update the status in the UI
                     notifyDataSetChanged() // Refresh the list if needed
+                    childDataDialoglistner.onChange()
                 } else {
                     // Show a toast message if the status cannot be changed
                     Toast.makeText(context, "Cannot change status", Toast.LENGTH_SHORT).show()

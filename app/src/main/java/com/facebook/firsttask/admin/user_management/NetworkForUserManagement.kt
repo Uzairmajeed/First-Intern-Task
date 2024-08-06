@@ -2,6 +2,7 @@ package com.facebook.firsttask.admin.user_management
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
@@ -10,6 +11,11 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class NetworkForUserManagement (private val authToken: String,private val context: Context) {
 
@@ -49,5 +55,49 @@ class NetworkForUserManagement (private val authToken: String,private val contex
             Log.d("StatusResponse", response.toString())
             false
         }
+    }
+
+    suspend fun updateChild(id: Int?, updatedFirstName: String?, updatedLastName: String?): Boolean {
+        val editRequest = mapOf(
+            "id" to id,
+            "firstName" to updatedFirstName,
+            "lastName" to updatedLastName
+        )
+
+        return try {
+            val jsonBody = gson.toJson(editRequest)
+
+            val response: HttpResponse = withContext(Dispatchers.IO) {
+                client.post("http://68.178.165.107:91/api/Parent/UpdateChild") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer $authToken")
+                    body = jsonBody
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                if (response.status == HttpStatusCode.OK) {
+                    val responseBody = response.receive<String>()
+                    Log.d("EditChildResponse", responseBody)
+                    showToast("Successfully Edited Child")
+                    true
+                } else {
+                    val responseBody = response.receive<String>()
+                    Log.e("EditChildResponse", "Failed to edit child: ${response.status}")
+                    Log.e("EditChildResponse", responseBody)
+                    showToast("Failed to Edit Child: ${response.status.value}")
+                    false
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("EditChildException", "Exception while editing child", e)
+            withContext(Dispatchers.Main) {
+                showToast("Error Editing Child: ${e.message}")
+            }
+            false
+        }
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

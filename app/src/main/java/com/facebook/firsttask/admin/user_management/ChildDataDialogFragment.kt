@@ -9,21 +9,26 @@ import androidx.fragment.app.DialogFragment
 import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.databinding.FragmentChildDataDialogBinding
 
-class ChildDataDialogFragment : DialogFragment() {
+class ChildDataDialogFragment : DialogFragment(),OnMakeChanges {
 
     private var _binding: FragmentChildDataDialogBinding? = null
     private val binding get() = _binding!!
 
     private var parentName: String? = null
+    private  var parentId: Int? = null
     private var childData: List<ChildData>? = null
 
     private lateinit var networkForUserManagement: NetworkForUserManagement
     private lateinit var preferencesManager: PreferencesManager
 
+    // Define callback interface
+    private var listener1: OnMakeChanges? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             parentName = it.getString("PARENT_NAME")
+            parentId = it .getInt("Parent_Id")
             childData = it.getParcelableArrayList("CHILD_DATA")
         }
     }
@@ -42,8 +47,12 @@ class ChildDataDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fetchData()
+    }
+
+    private fun fetchData() {
         // Set up RecyclerView or other UI elements with childData
-        val adapter = ChildDataAdapter(childData ?: emptyList(),parentName,childFragmentManager,requireContext())
+        val adapter = ChildDataAdapter(childData ?: emptyList(),parentName,parentId,childFragmentManager,requireContext(),this@ChildDataDialogFragment)
         binding.reclerviewofchilddata.adapter = adapter
     }
 
@@ -59,12 +68,27 @@ class ChildDataDialogFragment : DialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(parentName: String, childData: List<ChildData>) =
-            ChildDataDialogFragment().apply {
-                arguments = Bundle().apply {
+        fun newInstance(
+            parentName: String,
+            childData: List<ChildData>,
+            id: Int,
+            listner: OnMakeChanges
+        ):ChildDataDialogFragment{
+            val fragment = ChildDataDialogFragment()
+                val arg = Bundle().apply {
                     putString("PARENT_NAME", parentName)
                     putParcelableArrayList("CHILD_DATA", ArrayList(childData))
+                    putInt("Parent_Id",id)
                 }
-            }
+            fragment.arguments=arg
+            fragment.listener1 = listner
+            return  fragment
+        }
+    }
+
+    override fun onChange() {
+        listener1?.onChange()
+        fetchData()
+        dismiss()
     }
 }
