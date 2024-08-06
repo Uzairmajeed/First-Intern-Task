@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.firsttask.databinding.ItemGetallparentsBinding
 
 class GetALLParentsAdapter(
-    private val parents: List<ParentData>,
+    private var parents: List<ParentData>,
     private val fragmentManager: FragmentManager,
     private val listner: OnMakeChanges
 ) : RecyclerView.Adapter<GetALLParentsAdapter.ParentViewHolder>() {
@@ -34,6 +34,11 @@ class GetALLParentsAdapter(
             }
 
         }
+    }
+
+    fun updateData(newParents: List<ParentData>) {
+        parents = newParents
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = parents.size

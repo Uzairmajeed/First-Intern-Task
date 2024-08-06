@@ -39,8 +39,7 @@ data class ChildData(
         parcel.readString(),
         parcel.readInt(),
         TODO("groups")
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(firstName)
