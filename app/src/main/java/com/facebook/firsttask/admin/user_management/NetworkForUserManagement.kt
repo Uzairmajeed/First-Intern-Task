@@ -1,12 +1,14 @@
 package com.facebook.firsttask.admin.user_management
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
 import io.ktor.client.engine.android.Android
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 
 class NetworkForUserManagement (private val authToken: String,private val context: Context) {
@@ -30,6 +32,22 @@ class NetworkForUserManagement (private val authToken: String,private val contex
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList() // Return an empty list if parsing fails
+        }
+    }
+
+    // Function to change the status of a child
+    suspend fun changeStatus(childId: Int, newState: Boolean): Boolean {
+        val response: HttpResponse = client.post("http://68.178.165.107:91/api/Parent/ActivateInActivateChild?childId=$childId") {
+            header("Authorization", "Bearer $authToken")
+            // Assuming the request body might not be needed for this endpoint
+        }
+
+        return if (response.status.value == 200) {
+            Log.d("StatusResponse", response.toString())
+            true
+        } else {
+            Log.d("StatusResponse", response.toString())
+            false
         }
     }
 }

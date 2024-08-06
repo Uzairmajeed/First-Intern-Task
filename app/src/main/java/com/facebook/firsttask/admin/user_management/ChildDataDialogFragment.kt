@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import com.facebook.firsttask.PreferencesManager
 import com.facebook.firsttask.databinding.FragmentChildDataDialogBinding
 
 class ChildDataDialogFragment : DialogFragment() {
@@ -15,6 +16,9 @@ class ChildDataDialogFragment : DialogFragment() {
 
     private var parentName: String? = null
     private var childData: List<ChildData>? = null
+
+    private lateinit var networkForUserManagement: NetworkForUserManagement
+    private lateinit var preferencesManager: PreferencesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +32,10 @@ class ChildDataDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        preferencesManager = PreferencesManager(requireContext())
+        networkForUserManagement = preferencesManager.getAuthToken()?.let { NetworkForUserManagement(it, requireContext()) }!!
+
         _binding = FragmentChildDataDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,7 +43,7 @@ class ChildDataDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Set up RecyclerView or other UI elements with childData
-        val adapter = ChildDataAdapter(childData ?: emptyList(),parentName,childFragmentManager)
+        val adapter = ChildDataAdapter(childData ?: emptyList(),parentName,childFragmentManager,requireContext())
         binding.reclerviewofchilddata.adapter = adapter
     }
 
