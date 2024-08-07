@@ -218,7 +218,7 @@ class NetworkOperations(private val authToken: String, private val context: Cont
                 val responseBody = response.receive<String>()
                 Log.e("CreatePTMError", "Failed to create PTM: ${response.status}")
                 Log.e("CreatePTMError", responseBody)
-                showToast("Failed to create PTM: ${response.status.value}")
+                showToast("Failed to create PTM: ${response.status}")
             }
         } catch (e: Exception) {
             Log.e("CreatePTMException", "Exception while creating PTM", e)

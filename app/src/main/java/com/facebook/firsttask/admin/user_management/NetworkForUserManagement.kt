@@ -97,6 +97,62 @@ class NetworkForUserManagement (private val authToken: String,private val contex
             false
         }
     }
+
+
+    suspend fun updateParent(
+        parentId: Int?,
+        fatherFirstName: String,
+        fatherLastName: String,
+        motherFirstName: String,
+        motherLastName: String
+    ):Boolean{
+        val editParent = mapOf(
+            "id" to parentId,
+            "firstName1" to fatherFirstName,
+            "lastName1" to fatherLastName,
+            "firstName2" to motherFirstName,
+            "lastName2" to motherLastName
+        )
+
+        return try {
+            val jsonBody = gson.toJson(editParent)
+
+            val response: HttpResponse = withContext(Dispatchers.IO) {
+                client.post("http://68.178.165.107:91/api/Parent/UpdateParent") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer $authToken")
+                    body = jsonBody
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                if (response.status == HttpStatusCode.OK) {
+                    val responseBody = response.receive<String>()
+                    Log.d("EditParentResponse", responseBody)
+                    showToast("Successfully Edited Parent")
+                    true
+                } else {
+                    val responseBody = response.receive<String>()
+                    Log.e("EditParentResponse", "Failed to edit parent: ${response.status}")
+                    Log.e("EditParentResponse", responseBody)
+                    showToast("Failed to Edit Parent: ${response.status.value}")
+                    false
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("EditParentException", "Exception while editing parent", e)
+            withContext(Dispatchers.Main) {
+                showToast("Error Editing parent: ${e.message}")
+            }
+            false
+        }
+
+    }
+
+
+
+
+
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }

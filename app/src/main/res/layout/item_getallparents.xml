@@ -50,6 +50,7 @@
 
 
         <Button
+            android:id="@+id/addchildrenButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#EADFDF"
@@ -59,7 +60,7 @@
 
 
         <ImageButton
-            android:id="@+id/editButton"
+            android:id="@+id/editparentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_edit_24"
