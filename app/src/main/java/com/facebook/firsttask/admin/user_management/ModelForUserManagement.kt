@@ -70,3 +70,57 @@ data class GroupData(
     val groupId: Int,
     val groupName: String
 )
+
+data class WingResponse(
+    val status: Int,
+    val data: List<WingData>,
+    val success: Boolean,
+    val isValidationError: Boolean,
+    val totalCount: Int
+)
+
+data class WingData(
+    val wingId: Int,
+    val wingName: String
+)
+
+data class GroupResponse(
+    val status: Int,
+    val data: List<GroupDataAll>,
+    val success: Boolean,
+    val isValidationError: Boolean,
+    val totalCount: Int
+)
+
+data class GroupDataAll(
+    val id: Int,
+    val groupName: String,
+    val subjectId: Int,
+    val subjectName: String,
+    val teacherId: Int,
+    val teacherName: String
+)
+
+data class ClassResponse(
+    val status: Int,
+    val data: List<ClassData>,
+    val success: Boolean,
+    val isValidationError: Boolean,
+    val totalCount: Int
+)
+
+data class ClassData(
+    val classId: Int,
+    val className: String,
+    val wingId: Int,
+    val wing: String,
+    val subjectVms: List<SubjectData>? = null
+)
+
+data class SubjectData(
+    val id: Int,
+    val subjectName: String,
+    val classId: Int
+)
+
+

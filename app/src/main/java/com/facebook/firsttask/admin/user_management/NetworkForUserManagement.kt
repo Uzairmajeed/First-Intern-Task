@@ -149,6 +149,56 @@ class NetworkForUserManagement (private val authToken: String,private val contex
 
     }
 
+    suspend fun getAllWingNames(): List<String> {
+        val response: HttpResponse = client.get("http://68.178.165.107:91/api/Course/GetSchoolWings") {
+            header("Authorization", "Bearer $authToken")
+        }
+
+        val responseBody = response.receive<String>()
+
+        return try {
+            val wingResponse = gson.fromJson(responseBody, WingResponse::class.java)
+            wingResponse.data.map { it.wingName } // Return list of wing names
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList() // Return an empty list if parsing fails
+        }
+    }
+
+    suspend fun getAllGroups(): List<GroupDataAll> {
+        val response: HttpResponse = client.get("http://68.178.165.107:91/api/Course/GetAllGroups") {
+            header("Authorization", "Bearer $authToken")
+        }
+        val responseBody = response.receive<String>()
+
+        return try {
+            val groupResponse = gson.fromJson(responseBody, GroupResponse::class.java)
+            groupResponse.data
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList() // Return an empty list if parsing fails
+        }
+    }
+
+
+    suspend fun getAllClasses(wingName: String): List<ClassData> {
+        val response: HttpResponse = client.get("http://68.178.165.107:91/api/Location/GetAllClasses?wings=$wingName") {
+            header("Authorization", "Bearer $authToken")
+        }
+        val responseBody = response.receive<String>()
+
+        return try {
+            val classResponse = gson.fromJson(responseBody, ClassResponse::class.java)
+            classResponse.data
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList() // Return an empty list if parsing fails
+        }
+    }
+
+
+
+
 
 
 

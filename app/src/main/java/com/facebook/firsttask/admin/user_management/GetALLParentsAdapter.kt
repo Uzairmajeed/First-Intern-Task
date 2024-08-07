@@ -45,6 +45,16 @@ class GetALLParentsAdapter(
                 editDialogFragment.show(fragmentManager, "EditParentDialogFragment")
             }
 
+
+            addchildrenButton.setOnClickListener {
+                val addChildDialogFragment = AddChildDialogFragment.newInstance(
+                    parent.id,
+                    parent.firstName,
+                    parent.lastName
+                )
+                addChildDialogFragment.show(fragmentManager, "AddChildDialogFragment")
+            }
+
         }
     }
 
