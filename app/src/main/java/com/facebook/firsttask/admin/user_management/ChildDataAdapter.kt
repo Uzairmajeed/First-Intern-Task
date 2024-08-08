@@ -18,7 +18,6 @@ import kotlinx.coroutines.withContext
 class ChildDataAdapter(
     private val childDataList: List<ChildData>,
     private val parentName: String?,
-    private val parentId: Int?,
     private val fragmentManager: FragmentManager,
     private val context: Context,
     private val childDataDialoglistner: OnMakeChanges
@@ -61,16 +60,15 @@ class ChildDataAdapter(
                             it1,
                             it2,
                             parentName ?: "",
-                            parentId ?: 0,
+                            childData.childId,  // Replace parentId with childId
                             childDataDialoglistner
-
                         )
                     }
                 }
-                if (editChildDialog != null) {
-                    editChildDialog.show(fragmentManager, "EditChildDialogFragment")
-                }
+
+                editChildDialog?.show(fragmentManager, "EditChildDialog")
             }
+
 
         }
     }

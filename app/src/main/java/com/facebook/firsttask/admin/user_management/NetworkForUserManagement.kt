@@ -196,6 +196,61 @@ class NetworkForUserManagement (private val authToken: String,private val contex
         }
     }
 
+    suspend fun addChildrenToParent(
+        parentId: Int?,
+        firstName: String,
+        lastName: String,
+        email: String,
+        wing: String,
+        className: Int?,
+        groups: List<Int>?
+    ): Boolean {
+
+        // Convert groups to the correct format
+        val groupIds = groups ?: emptyList()
+
+        // Create the request body as a list of ChildRequest
+        val requestBody = listOf(
+            ChildRequest(
+                firstName = firstName,
+                lastName = lastName,
+                email = email,
+                wing = wing,
+                parentId = parentId ?: 0,
+                classId = className ?: 0,
+                groups = groupIds
+            )
+        )
+
+        return try {
+            // Serialize the request body to JSON
+            val jsonBody = gson.toJson(requestBody)
+
+            // Make the POST request
+            val response: HttpResponse = withContext(Dispatchers.IO) {
+                client.post("http://68.178.165.107:91/api/Parent/AddChildToParent?parentId=${parentId ?: 0}") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer $authToken")
+                    body = jsonBody
+                }
+            }
+
+            // Handle the response
+            if (response.status == HttpStatusCode.OK) {
+                Log.d("AddChildResponse", response.receive<String>())
+                showToast("Child added successfully")
+                true
+            } else {
+                Log.e("AddChildResponse", "Failed to add child: ${response.status}")
+                showToast("Failed to add child: ${response.status.value}")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("AddChildException", "Exception while adding child", e)
+            showToast("Error adding child: ${e.message}")
+            false
+        }
+    }
 
 
 

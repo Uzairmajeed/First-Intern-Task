@@ -123,4 +123,15 @@ data class SubjectData(
     val classId: Int
 )
 
+data class ChildRequest(
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val wing: String,
+    val parentId: Int,
+    val classId: Int,
+    val groups: List<Int> // Changed from String to Int if group IDs are integers
+)
+
+
 

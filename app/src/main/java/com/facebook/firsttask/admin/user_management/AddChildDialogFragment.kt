@@ -2,6 +2,7 @@ package com.facebook.firsttask.admin.user_management
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,11 @@ class AddChildDialogFragment : DialogFragment() {
 
     private lateinit var networkForUserManagement: NetworkForUserManagement
     private lateinit var preferencesManager: PreferencesManager
+
+    private var listner : OnMakeChanges? = null
+
+    private var allGroups: List<GroupDataAll>? = null
+    private var allClasses: List<ClassData>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,8 +77,7 @@ class AddChildDialogFragment : DialogFragment() {
 
 
         binding.saveButton.setOnClickListener {
-
-            dismiss()
+            addChildren()
         }
     }
 
@@ -93,12 +98,49 @@ class AddChildDialogFragment : DialogFragment() {
 
     private fun fetchGroups() {
         lifecycleScope.launch {
-            val groups = networkForUserManagement.getAllGroups()
-            val groupNames = groups.map { it.groupName }
+            try {
+                val groups = networkForUserManagement.getAllGroups()
+                val groupNames = groups.map { it.groupName }
 
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, groupNames)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.groupSpinner.adapter = adapter
+                // Cache the fetched groups data
+                allGroups = groups
+
+                // Initialize a set for selected items, it should be empty initially
+                val selectedItems = mutableSetOf<String>()
+
+                Log.d("SelectedGroups", selectedItems.toString())
+
+                // Use the custom adapter
+                val adapter = CustomSpinnerAdapter(requireContext(), groupNames, selectedItems)
+                binding.groupSpinner.adapter = adapter
+
+                // Set listener to handle item selection
+                binding.groupSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                        // Handle item selection
+                        val selectedItem = adapter.getItem(position) ?: return
+
+                        // Only update selection if item is not already selected
+                        if (position >= 0) {
+                            adapter.toggleSelection(selectedItem)
+
+                            // Optionally, you can handle other actions here if needed
+                            val selectedItemsList = selectedItems.toList()
+                            Log.d("SelectedGroups", selectedItemsList.toString())
+                            // Use selectedItemsList as needed
+                        }
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {}
+                })
+
+                // Ensure no default item is selected
+                binding.groupSpinner.setSelection(-1) // This should ensure no item is selected by default
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Error fetching groups", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -107,6 +149,9 @@ class AddChildDialogFragment : DialogFragment() {
             try {
                 val classes = networkForUserManagement.getAllClasses(wingName)
                 val classNames = classes.map { it.className }
+
+                // Cache the fetched classes data
+                allClasses = classes
 
                 // Check if there are any classes for the selected wing
                 if (classNames.isNotEmpty()) {
@@ -124,6 +169,59 @@ class AddChildDialogFragment : DialogFragment() {
         }
     }
 
+    private fun getGroupIdByName(groupName: String): Int? {
+        return allGroups?.find { it.groupName == groupName }?.id
+    }
+
+    private fun getClassIdByName(className: String): Int? {
+        return allClasses?.find { it.className == className }?.classId
+    }
+
+
+    private fun addChildren() {
+        val firstName = binding.firstnameEditText.text.toString()
+        val lastName = binding.lastnameEditText.text.toString()
+        val email = binding.emailEditText.text.toString()
+        val selectedWing = binding.wingSpinner.selectedItem?.toString()
+        val selectedClass = binding.classSpinner.selectedItem?.toString()
+        val selectedGroups = (binding.groupSpinner.adapter as? CustomSpinnerAdapter)?.getSelectedItems()
+
+        // Check if any of the required fields are empty or null
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || selectedWing.isNullOrEmpty() || selectedClass.isNullOrEmpty() || selectedGroups.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val classId = getClassIdByName(selectedClass)
+        val groupIds = selectedGroups.mapNotNull { getGroupIdByName(it) }
+
+        lifecycleScope.launch {
+            try {
+                val response = networkForUserManagement.addChildrenToParent(
+                    parentId = parentId,
+                    firstName = firstName,
+                    lastName = lastName,
+                    email = email,
+                    wing = selectedWing,
+                    className = classId,
+                    groups = groupIds
+                )
+                if (response) {
+                    Toast.makeText(requireContext(), "Child added successfully", Toast.LENGTH_SHORT).show()
+                    listner?.onChange()
+                    dismiss()
+                } else {
+                    Toast.makeText(requireContext(), "Failed to add child", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Error adding child", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+
 
     override fun onStart() {
         super.onStart()
@@ -136,7 +234,12 @@ class AddChildDialogFragment : DialogFragment() {
     }
 
     companion object {
-        fun newInstance(parentId: Int, parentFirstName: String?, parentLastName: String?): AddChildDialogFragment {
+        fun newInstance(
+            parentId: Int,
+            parentFirstName: String?,
+            parentLastName: String?,
+            listner: OnMakeChanges
+        ): AddChildDialogFragment {
             val fragment = AddChildDialogFragment()
             val args = Bundle().apply {
                 putInt("parentId", parentId)
@@ -144,6 +247,7 @@ class AddChildDialogFragment : DialogFragment() {
                 putString("parentLastName", parentLastName)
             }
             fragment.arguments = args
+            fragment.listner = listner
             return fragment
         }
     }

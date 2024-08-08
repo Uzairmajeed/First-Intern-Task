@@ -28,7 +28,7 @@ class GetALLParentsAdapter(
             dropdownButton.setOnClickListener {
                 val dialogFragment = ChildDataDialogFragment.newInstance(
                     "${parent.firstName} ${parent.lastName}",
-                    parent.childrens,parent.id,listner
+                    parent.childrens,listner
                 )
                 dialogFragment.show(fragmentManager, "ChildDataDialogFragment")
             }
@@ -50,7 +50,8 @@ class GetALLParentsAdapter(
                 val addChildDialogFragment = AddChildDialogFragment.newInstance(
                     parent.id,
                     parent.firstName,
-                    parent.lastName
+                    parent.lastName,
+                    listner
                 )
                 addChildDialogFragment.show(fragmentManager, "AddChildDialogFragment")
             }

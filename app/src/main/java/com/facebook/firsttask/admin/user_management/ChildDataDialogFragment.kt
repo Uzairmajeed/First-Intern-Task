@@ -15,7 +15,6 @@ class ChildDataDialogFragment : DialogFragment(),OnMakeChanges {
     private val binding get() = _binding!!
 
     private var parentName: String? = null
-    private  var parentId: Int? = null
     private var childData: List<ChildData>? = null
 
     private lateinit var networkForUserManagement: NetworkForUserManagement
@@ -28,7 +27,6 @@ class ChildDataDialogFragment : DialogFragment(),OnMakeChanges {
         super.onCreate(savedInstanceState)
         arguments?.let {
             parentName = it.getString("PARENT_NAME")
-            parentId = it .getInt("Parent_Id")
             childData = it.getParcelableArrayList("CHILD_DATA")
         }
     }
@@ -52,7 +50,7 @@ class ChildDataDialogFragment : DialogFragment(),OnMakeChanges {
 
     private fun fetchData() {
         // Set up RecyclerView or other UI elements with childData
-        val adapter = ChildDataAdapter(childData ?: emptyList(),parentName,parentId,childFragmentManager,requireContext(),this@ChildDataDialogFragment)
+        val adapter = ChildDataAdapter(childData ?: emptyList(),parentName,childFragmentManager,requireContext(),this@ChildDataDialogFragment)
         binding.reclerviewofchilddata.adapter = adapter
     }
 
@@ -71,14 +69,12 @@ class ChildDataDialogFragment : DialogFragment(),OnMakeChanges {
         fun newInstance(
             parentName: String,
             childData: List<ChildData>,
-            id: Int,
             listner: OnMakeChanges
         ):ChildDataDialogFragment{
             val fragment = ChildDataDialogFragment()
                 val arg = Bundle().apply {
                     putString("PARENT_NAME", parentName)
                     putParcelableArrayList("CHILD_DATA", ArrayList(childData))
-                    putInt("Parent_Id",id)
                 }
             fragment.arguments=arg
             fragment.listener1 = listner

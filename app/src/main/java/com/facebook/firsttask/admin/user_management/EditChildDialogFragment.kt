@@ -21,7 +21,7 @@ class EditChildDialogFragment : DialogFragment() {
     private var childFirstName: String? = null
     private var childLastName: String? = null
     private var parentName: String? = null
-    private var parentId: Int? = null
+    private var childID: Int? = null
 
     private lateinit var networkForUserManagement: NetworkForUserManagement
     private lateinit var preferencesManager: PreferencesManager
@@ -35,7 +35,7 @@ class EditChildDialogFragment : DialogFragment() {
             childFirstName = it.getString("CHILD_FIRST_NAME")
             childLastName = it.getString("CHILD_LAST_NAME")
             parentName = it.getString("PARENT_NAME")
-            parentId = it.getInt("PARENT_ID")
+            childID = it.getInt("CHILD_ID")
         }
     }
 
@@ -67,7 +67,7 @@ class EditChildDialogFragment : DialogFragment() {
 
             CoroutineScope(Dispatchers.IO).launch {
                 val success = networkForUserManagement.updateChild(
-                    parentId,
+                    childID,
                     updatedFirstName,
                     updatedLastName
                 )
@@ -97,7 +97,7 @@ class EditChildDialogFragment : DialogFragment() {
             childFirstName: String,
             childLastName: String,
             parentName: String,
-            parentId: Int,
+            childId: Int,
             childDataDialoglistner: OnMakeChanges
         ) :EditChildDialogFragment {
             val fragment = EditChildDialogFragment()
@@ -105,7 +105,7 @@ class EditChildDialogFragment : DialogFragment() {
                     putString("CHILD_FIRST_NAME", childFirstName)
                     putString("CHILD_LAST_NAME", childLastName)
                     putString("PARENT_NAME", parentName)
-                    putInt("PARENT_ID", parentId)
+                    putInt("CHILD_ID", childId)
                 }
             fragment.arguments=args
             fragment.listener = childDataDialoglistner
