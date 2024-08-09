@@ -72,6 +72,11 @@ class ParentsFragment : Fragment(),OnMakeChanges, FilterDialogFragment.FilterLis
             filterDialog.setFilterListener(this)
             filterDialog.show(childFragmentManager, "FilterDialogFragment")
         }
+
+        binding.addparentButton.setOnClickListener {
+            val dialogFragment = AddParentDialogFragment.newInstance()
+            dialogFragment.show(parentFragmentManager, "AddParentDialogFragment")
+        }
     }
 
     private fun filterList(query: String) {

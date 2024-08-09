@@ -134,4 +134,16 @@ data class ChildRequest(
 )
 
 
+data class ParentRequest(
+    val fatherFirstName: String,
+    val fatherLastName: String,
+    val fatherEmail: String,
+    val motherFirstName: String,
+    val motherLastName: String,
+    val motherEmail: String,
+    val childrens: List<ChildRequest>
+)
+
+
+
 

@@ -252,6 +252,56 @@ class NetworkForUserManagement (private val authToken: String,private val contex
         }
     }
 
+    suspend fun addNewParent(
+        fatherFirstName: String,
+        fatherLastName: String,
+        fatherEmail: String,
+        motherFirstName: String,
+        motherLastName: String,
+        motherEmail: String,
+        childrens: List<ChildRequest>
+    ): Boolean {
+        // Create the request body
+        val parentRequest = ParentRequest(
+            fatherFirstName = fatherFirstName,
+            fatherLastName = fatherLastName,
+            fatherEmail = fatherEmail,
+            motherFirstName = motherFirstName,
+            motherLastName = motherLastName,
+            motherEmail = motherEmail,
+            childrens = childrens
+        )
+
+        return try {
+            // Serialize the request body to JSON
+            val jsonBody = gson.toJson(parentRequest)
+
+            // Make the POST request
+            val response: HttpResponse = withContext(Dispatchers.IO) {
+                client.post("http://68.178.165.107:91/api/Parent/AddParent") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer $authToken")
+                    body = jsonBody
+                }
+            }
+
+            // Handle the response
+            if (response.status == HttpStatusCode.OK) {
+                Log.d("AddParentResponse", response.receive<String>())
+                showToast("Parent added successfully")
+                true
+            } else {
+                Log.e("AddParentResponse", "Failed to add parent: ${response.status}")
+                showToast("Failed to add parent: ${response.status.value}")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("AddParentException", "Exception while adding parent", e)
+            showToast("Error adding parent: ${e.message}")
+            false
+        }
+    }
+
 
 
 
